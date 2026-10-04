@@ -21,3 +21,36 @@ function showAdmin(){openModal("adminModal");const payments=state.orders.filter(
 function adminSuccess(id){const o=state.orders.find(x=>x.id===id);if(!o)return;o.status="Success";state.notifications.unshift({text:`Payment Successful — ${o.title}`,date:new Date().toLocaleString()});save();toast("Payment marked Success");showAdmin()}
 window.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal.open").forEach(m=>m.classList.remove("open"))});
 window.openAdmin=showAdmin;
+const mediaData = {
+  photos: [
+    "assets/premium-photo.png",
+    "assets/premium-photo2.png"
+  ],
+  videos: [
+    "assets/premium-video.mp4",
+    "assets/premium-video2.mp4"
+  ]
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  const photoContainer = document.getElementById("photo-gallery");
+  const videoContainer = document.getElementById("video-gallery");
+
+  if (photoContainer) {
+    photoContainer.innerHTML = mediaData.photos.map(src => `
+      <div style="margin-bottom:15px;">
+        <img src="${src}" alt="Photo" style="width:100%; border-radius:12px; display:block;" loading="lazy">
+      </div>
+    `).join("");
+  }
+
+  if (videoContainer) {
+    videoContainer.innerHTML = mediaData.videos.map(src => `
+      <div style="margin-bottom:20px;">
+        <video controls playsinline width="100%" style="border-radius:12px; display:block;">
+          <source src="${src}" type="video/mp4">
+        </video>
+      </div>
+    `).join("");
+  }
+});
