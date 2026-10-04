@@ -6,6 +6,81 @@
 <title>RIYA ROY Creation</title>
 <meta name="description" content="RIYA ROY Creation — Premium Content, Membership, Promotion and Brand Collaboration.">
 <link rel="stylesheet" href="styles.css">
+<style>
+  /* 3 सेकंड टीज़र बैज */
+  .preview-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 45, 85, 0.85);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* वीडियो कंटेनर */
+  .video-preview-box {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    background: #000;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  .video-preview-box video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  /* फ़ोटो का ब्लर और लॉक बॉक्स */
+  .photo-blur-box {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    background: #111;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  .photo-blur-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(20px);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .photo-blur-box .lock-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .photo-blur-box .lock-overlay span {
+    font-size: 36px;
+    margin-bottom: 6px;
+  }
+
+  .photo-blur-box .lock-overlay small {
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+</style>
 </head>
 <body>
 <div id="ageGate" class="gate" style="display:flex;">
@@ -63,73 +138,67 @@
   <div><strong>₹99</strong><span>Membership from</span></div>
 </section>
 
-<!-- PREMIUM VIDEOS -->
+<!-- PREMIUM VIDEOS (3 SECONDS TEASER LOOP) -->
 <section class="section" id="premium-video">
   <div class="section-head"><div><p class="eyebrow">01</p><h2>Premium Video</h2></div><span class="price-pill">₹49 each</span></div>
   <div class="content-grid">
     <article class="content-card">
-      <div class="media video-thumb" style="position:relative; overflow:hidden; border-radius:12px; height:240px; background:#000;">
-        <video autoplay muted loop playsinline preload="metadata" src="assets/premium-video.mp4" style="width:100%; height:100%; object-fit:cover; filter:blur(16px); opacity:0.6; pointer-events:none;"></video>
-        <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,0,0,0.35);">
-          <span style="font-size:32px; margin-bottom:6px;">🔒</span>
-          <span style="color:#fff; font-size:12px; font-weight:bold; letter-spacing:1px;">LOCKED CONTENT</span>
-        </div>
+      <div class="media video-preview-box">
+        <span class="preview-badge">3s PREVIEW</span>
+        <video autoplay muted playsinline loop src="assets/premium-video.mp4" ontimeupdate="if(this.currentTime>=3){this.currentTime=0;}"></video>
       </div>
       <div class="card-body">
         <h3>Premium Video #01</h3>
-        <p>Member access or lifetime single purchase.</p>
-        <button class="btn small primary" onclick="buyContent('Premium Video #01','Premium Video',49)">Unlock ₹49</button>
+        <p>3-second preview. Unlock to watch full video.</p>
+        <button class="btn small primary" onclick="buyContent('Premium Video #01','Premium Video',49)">Unlock Full Video ₹49</button>
       </div>
     </article>
 
     <article class="content-card">
-      <div class="media video-thumb" style="position:relative; overflow:hidden; border-radius:12px; height:240px; background:#000;">
-        <video autoplay muted loop playsinline preload="metadata" src="assets/premium-video2.mp4" style="width:100%; height:100%; object-fit:cover; filter:blur(16px); opacity:0.6; pointer-events:none;"></video>
-        <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,0,0,0.35);">
-          <span style="font-size:32px; margin-bottom:6px;">🔒</span>
-          <span style="color:#fff; font-size:12px; font-weight:bold; letter-spacing:1px;">LOCKED CONTENT</span>
-        </div>
+      <div class="media video-preview-box">
+        <span class="preview-badge">3s PREVIEW</span>
+        <video autoplay muted playsinline loop src="assets/premium-video2.mp4" ontimeupdate="if(this.currentTime>=3){this.currentTime=0;}"></video>
       </div>
       <div class="card-body">
         <h3>Premium Video #02</h3>
-        <p>Member access or lifetime single purchase.</p>
-        <button class="btn small primary" onclick="buyContent('Premium Video #02','Premium Video',49)">Unlock ₹49</button>
+        <p>3-second preview. Unlock to watch full video.</p>
+        <button class="btn small primary" onclick="buyContent('Premium Video #02','Premium Video',49)">Unlock Full Video ₹49</button>
       </div>
     </article>
   </div>
 </section>
 
-<!-- PREMIUM PHOTOS -->
+<!-- PREMIUM PHOTOS (HEAVY BLUR + LOCK) -->
 <section class="section alt" id="premium-photo">
   <div class="section-head"><div><p class="eyebrow">02</p><h2>Premium Photo</h2></div><span class="price-pill">₹19 each</span></div>
   <div class="content-grid">
     <article class="content-card">
-      <div class="media photo-thumb" style="position:relative; overflow:hidden; border-radius:12px; height:240px; background:#111;">
-        <img src="assets/premium-photo.png" alt="Premium Photo #01" style="width:100%; height:100%; object-fit:cover; filter:blur(16px); opacity:0.6;">
-        <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,0,0,0.35);">
-          <span style="font-size:32px; margin-bottom:6px;">🔒</span>
-          <span style="color:#fff; font-size:12px; font-weight:bold; letter-spacing:1px;">LOCKED PHOTO</span>
+      <div class="media photo-blur-box">
+        <img src="assets/premium-photo.png" alt="Premium Photo #01">
+        <div class="lock-overlay">
+          <span>🔒</span>
+          <small>LOCKED PHOTO</small>
         </div>
       </div>
       <div class="card-body">
         <h3>Premium Photo #01</h3>
-        <p>View inside the website. No download.</p>
-        <button class="btn small primary" onclick="buyContent('Premium Photo #01','Premium Photo',19)">Unlock ₹19</button>
+        <p>Full HD photo set. View inside website.</p>
+        <button class="btn small primary" onclick="buyContent('Premium Photo #01','Premium Photo',19)">Unlock Photo ₹19</button>
       </div>
     </article>
 
     <article class="content-card">
-      <div class="media photo-thumb" style="position:relative; overflow:hidden; border-radius:12px; height:240px; background:#111;">
-        <img src="assets/premium-photo2.png" alt="Premium Photo #02" style="width:100%; height:100%; object-fit:cover; filter:blur(16px); opacity:0.6;">
-        <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,0,0,0.35);">
-          <span style="font-size:32px; margin-bottom:6px;">🔒</span>
-          <span style="color:#fff; font-size:12px; font-weight:bold; letter-spacing:1px;">LOCKED PHOTO</span>
+      <div class="media photo-blur-box">
+        <img src="assets/premium-photo2.png" alt="Premium Photo #02">
+        <div class="lock-overlay">
+          <span>🔒</span>
+          <small>LOCKED PHOTO</small>
         </div>
       </div>
       <div class="card-body">
         <h3>Premium Photo #02</h3>
-        <p>View inside the website. No download.</p>
-        <button class="btn small primary" onclick="buyContent('Premium Photo #02','Premium Photo',19)">Unlock ₹19</button>
+        <p>Full HD photo set. View inside website.</p>
+        <button class="btn small primary" onclick="buyContent('Premium Photo #02','Premium Photo',19)">Unlock Photo ₹19</button>
       </div>
     </article>
   </div>
@@ -150,9 +219,9 @@
 <section class="section membership" id="membership">
   <div class="section-head"><div><p class="eyebrow">MEMBERSHIP</p><h2>Choose your access</h2></div><span class="price-pill">Manual renewal</span></div>
   <div class="plans">
-    <article class="plan"><span>Monthly</span><strong>₹99</strong><small>30 days</small><button class="btn primary" onclick="buyMembership('Monthly',99)">Join</button></article>
-    <article class="plan featured"><span>3 Months</span><strong>₹249</strong><small>90 days</small><button class="btn primary" onclick="buyMembership('3 Months',249)">Join</button></article>
-    <article class="plan"><span>Yearly</span><strong>₹999</strong><small>365 days</small><button class="btn primary" onclick="buyMembership('Yearly',999)">Join</button></article>
+    <article class="plan"><span>Monthly</span><strong>₹99</strong><small>30 days</small><button class="btn primary">Join</button></article>
+    <article class="plan featured"><span>3 Months</span><strong>₹249</strong><small>90 days</small><button class="btn primary">Join</button></article>
+    <article class="plan"><span>Yearly</span><strong>₹999</strong><small>365 days</small><button class="btn primary">Join</button></article>
   </div>
   <p class="note">Active membership includes Premium Video, Premium Photo and Exclusive Video, including new content added during the active period. No auto-renewal.</p>
 </section>
@@ -174,7 +243,6 @@
     <div class="two"><label>Promotion Date<input id="promoDate" type="date" required></label><label>Social Media Link<input id="promoLink" type="url" placeholder="https://..." required></label></div>
     <button class="btn primary" type="submit">Continue to Payment</button>
   </form>
-  <p class="note">Admin reviews promotion orders within 24 hours. Status flow: Pending → Approved → Scheduled → Live → Completed / Rejected.</p>
 </section>
 
 <!-- BRAND COLLABORATION -->
@@ -199,7 +267,6 @@
 
 <footer>
   <div><strong>RIYA ROY Creation</strong><span>Premium Content • Promotion • Brand Collaboration</span></div>
-  <div class="footer-links"><a href="https://www.instagram.com/riya_roy5910" target="_blank">Instagram</a><a href="https://www.facebook.com/share/1JEAUP6VeA/" target="_blank">Facebook</a><a href="https://youtube.com/@riya_roy_5910" target="_blank">YouTube</a><a href="#" onclick="legal('Terms & Conditions')">Terms</a><a href="#" onclick="legal('Privacy Policy')">Privacy</a><a href="#" onclick="legal('Refund Policy')">Refund</a></div>
 </footer>
 
 <div id="toast"></div>
@@ -216,7 +283,6 @@
 <div id="paymentModal" class="modal"><div class="modal-card">
   <button class="close" onclick="closeModal('paymentModal')">×</button><p class="eyebrow">PAYMENT</p><h2 id="payTitle">Payment</h2><div class="pay-box"><span>Amount</span><strong id="payAmount">₹0</strong><span>UPI ID</span><code>917679669353@upi</code></div>
   <a id="upiLink" class="btn primary full" href="#">Open UPI App</a>
-  <p class="note">This free static build includes the UPI intent button. Automatic payment verification requires connecting a UPI payment gateway/backend.</p>
   <button class="btn ghost full" onclick="markPaymentPending()">I have paid / Check payment</button>
 </div></div>
 
@@ -224,12 +290,6 @@
 <div id="accountModal" class="modal"><div class="modal-card wide">
   <button class="close" onclick="closeModal('accountModal')">×</button><h2>My Account</h2>
   <div id="accountBody"></div>
-</div></div>
-
-<!-- ADMIN MODAL -->
-<div id="adminModal" class="modal"><div class="modal-card wide">
-  <button class="close" onclick="closeModal('adminModal')">×</button><h2>Admin Panel</h2><p class="note">Demo/local admin view for the free static build.</p>
-  <div class="admin-grid" id="adminStats"></div><div id="adminOrders"></div>
 </div></div>
 
 <script src="app.js"></script>
