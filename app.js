@@ -1,71 +1,84 @@
-/* =========================================================
+/* =====================================================
    RIYA ROY Creation
-   Automatic Premium Asset System
-========================================================= */
+   Automatic Assets System
+===================================================== */
 
 
 /* =========================
-   BASIC STATE
+   USER STATE
 ========================= */
 
 const state = {
-  user: JSON.parse(localStorage.getItem("rr_user") || "null"),
-  orders: JSON.parse(localStorage.getItem("rr_orders") || "[]")
+
+  user: JSON.parse(
+    localStorage.getItem("rr_user") || "null"
+  ),
+
+  orders: JSON.parse(
+    localStorage.getItem("rr_orders") || "[]"
+  )
+
 };
 
 
 function save() {
-  localStorage.setItem("rr_user", JSON.stringify(state.user));
-  localStorage.setItem("rr_orders", JSON.stringify(state.orders));
+
+  localStorage.setItem(
+    "rr_user",
+    JSON.stringify(state.user)
+  );
+
+  localStorage.setItem(
+    "rr_orders",
+    JSON.stringify(state.orders)
+  );
+
 }
 
 
 /* =========================
-   ASSET CONFIG
-=========================
-
-   IMPORTANT:
-
-   preview-video1.mp4
-   premium-video1.mp4
-
-   preview-video2.mp4
-   premium-video2.mp4
-
-   Photos can simply be placed in assets.
-*/
+   ASSETS
+========================= */
 
 const ASSET_PATH = "assets/";
 
 
 /* =========================
-   MODAL SYSTEM
+   MODALS
 ========================= */
 
 function openModal(id) {
-  const modal = document.getElementById(id);
+
+  const modal =
+    document.getElementById(id);
 
   if (modal) {
     modal.style.display = "block";
   }
+
 }
 
 
 function closeModal(id) {
-  const modal = document.getElementById(id);
+
+  const modal =
+    document.getElementById(id);
 
   if (modal) {
     modal.style.display = "none";
   }
+
 }
 
 
 /* =========================
-   TOAST
+   MESSAGE
 ========================= */
 
 function toast(message) {
+
   alert(message);
+
 }
 
 
@@ -79,64 +92,93 @@ let loginNextAction = null;
 function requireLogin(next) {
 
   if (state.user) {
+
     next();
+
     return;
   }
 
   loginNextAction = next;
 
   openModal("loginModal");
+
 }
 
 
 function sendOtp() {
 
-  const phone = document.getElementById("loginPhone");
+  const phone =
+    document.getElementById("loginPhone");
 
   if (!phone) return;
 
-  const value = phone.value.trim();
+  const value =
+    phone.value.trim();
 
   if (!/^[0-9]{10}$/.test(value)) {
-    toast("Please enter a valid 10-digit mobile number.");
+
+    toast(
+      "Please enter a valid 10-digit mobile number."
+    );
+
     return;
   }
 
-  document.getElementById("phoneStep").style.display = "none";
-  document.getElementById("otpStep").style.display = "block";
+  document.getElementById(
+    "phoneStep"
+  ).style.display = "none";
 
-  toast("OTP sent. Demo OTP is 123456.");
+  document.getElementById(
+    "otpStep"
+  ).style.display = "block";
+
+  toast(
+    "OTP sent. Demo OTP is 123456."
+  );
+
 }
 
 
 function verifyOtp() {
 
-  const phone = document.getElementById("loginPhone");
-  const otp = document.getElementById("loginOtp");
+  const phone =
+    document.getElementById("loginPhone");
+
+  const otp =
+    document.getElementById("loginOtp");
 
   if (!phone || !otp) return;
 
   if (otp.value.trim() !== "123456") {
+
     toast("Invalid OTP.");
+
     return;
   }
 
   state.user = {
+
     phone: phone.value.trim(),
+
     member: false
+
   };
 
   save();
 
   closeModal("loginModal");
 
-  const next = loginNextAction;
+  const next =
+    loginNextAction;
 
   loginNextAction = null;
 
   if (typeof next === "function") {
+
     next();
+
   }
+
 }
 
 
@@ -147,23 +189,40 @@ function verifyOtp() {
 function openAccount() {
 
   if (!state.user) {
-    requireLogin(() => openAccount());
+
+    requireLogin(
+      () => openAccount()
+    );
+
     return;
   }
 
-  const info = document.getElementById("accountInfo");
+  const info =
+    document.getElementById(
+      "accountInfo"
+    );
 
   if (!info) return;
 
   info.innerHTML = `
-    <p>Mobile: <strong>${escapeHtml(state.user.phone)}</strong></p>
+
+    <p>
+      Mobile:
+      <strong>
+        ${escapeHtml(state.user.phone)}
+      </strong>
+    </p>
 
     <div class="gap"></div>
 
     <p>
       Membership:
       <strong>
-        ${state.user.member ? "Active" : "Not Active"}
+        ${
+          state.user.member
+            ? "Active"
+            : "Not Active"
+        }
       </strong>
     </p>
 
@@ -171,11 +230,15 @@ function openAccount() {
 
     <p>
       Purchased items:
-      <strong>${state.orders.length}</strong>
+      <strong>
+        ${state.orders.length}
+      </strong>
     </p>
+
   `;
 
   openModal("accountModal");
+
 }
 
 
@@ -188,6 +251,7 @@ function logout() {
   closeModal("accountModal");
 
   toast("Logged out.");
+
 }
 
 
@@ -198,34 +262,61 @@ function logout() {
 let pendingPay = null;
 
 
-function openPayment(title, amount, type, meta = {}) {
+function openPayment(
+  title,
+  amount,
+  type,
+  meta = {}
+) {
 
   requireLogin(() => {
 
     pendingPay = {
-      title,
-      amount,
-      type,
-      meta,
+
+      title: title,
+
+      amount: amount,
+
+      type: type,
+
+      meta: meta,
+
       id: "ORD" + Date.now()
+
     };
 
+
     const titleElement =
-      document.getElementById("paymentTitle");
+      document.getElementById(
+        "paymentTitle"
+      );
 
     const amountElement =
-      document.getElementById("paymentAmount");
+      document.getElementById(
+        "paymentAmount"
+      );
 
     const upiLink =
-      document.getElementById("upiLink");
+      document.getElementById(
+        "upiLink"
+      );
+
 
     if (titleElement) {
-      titleElement.textContent = title;
+
+      titleElement.textContent =
+        title;
+
     }
 
+
     if (amountElement) {
-      amountElement.textContent = amount;
+
+      amountElement.textContent =
+        amount;
+
     }
+
 
     if (upiLink) {
 
@@ -233,57 +324,65 @@ function openPayment(title, amount, type, meta = {}) {
         "upi://pay" +
         "?pa=917679669353@upi" +
         "&pn=RIYA%20ROY" +
-        "&am=" + encodeURIComponent(amount) +
+        "&am=" +
+        encodeURIComponent(amount) +
         "&cu=INR";
+
     }
 
+
     openModal("paymentModal");
+
   });
+
 }
 
 
 function markPaymentPending() {
 
   if (!pendingPay) {
-    toast("No payment is pending.");
+
+    toast(
+      "No payment is pending."
+    );
+
     return;
   }
 
-  state.orders.push(pendingPay);
+
+  const order =
+    pendingPay;
+
+  state.orders.push(order);
 
   save();
-
-  const item = pendingPay;
 
   pendingPay = null;
 
   closeModal("paymentModal");
 
-  toast("Payment marked as done.");
+  toast(
+    "Payment marked as done."
+  );
 
-  unlockPurchasedContent(item);
-}
 
+  if (
+    order.type === "Membership"
+  ) {
 
-/* =========================
-   PURCHASE CHECK
-========================= */
+    if (state.user) {
 
-function hasPurchased(contentId) {
+      state.user.member = true;
 
-  if (!state.user) {
-    return false;
+      save();
+
+    }
+
   }
 
-  if (state.user.member) {
-    return true;
-  }
 
-  return state.orders.some(order => {
+  loadAllPremiumContent();
 
-    return order.meta &&
-           order.meta.contentId === contentId;
-  });
 }
 
 
@@ -299,13 +398,19 @@ function buyContent(
 ) {
 
   openPayment(
+
     title,
+
     amount,
+
     category,
+
     {
       contentId: contentId
     }
+
   );
+
 }
 
 
@@ -313,17 +418,26 @@ function buyContent(
    MEMBERSHIP
 ========================= */
 
-function buyMembership(plan, amount) {
+function buyMembership(
+  plan,
+  amount
+) {
 
   openPayment(
+
     plan,
+
     amount,
+
     "Membership",
+
     {
       membership: true,
       plan: plan
     }
+
   );
+
 }
 
 
@@ -336,28 +450,41 @@ function submitPromotion(event) {
   event.preventDefault();
 
   const name =
-    document.getElementById("promotionName").value.trim();
+    document.getElementById(
+      "promotionName"
+    ).value.trim();
 
   const contact =
-    document.getElementById("promotionContact").value.trim();
+    document.getElementById(
+      "promotionContact"
+    ).value.trim();
 
   const details =
-    document.getElementById("promotionDetails").value.trim();
+    document.getElementById(
+      "promotionDetails"
+    ).value.trim();
+
 
   requireLogin(() => {
 
     openPayment(
+
       "Promotion Order",
+
       30,
+
       "Promotion",
+
       {
-        name,
-        contact,
-        details
+        name: name,
+        contact: contact,
+        details: details
       }
+
     );
 
   });
+
 }
 
 
@@ -370,85 +497,125 @@ function submitCollab(event) {
   event.preventDefault();
 
   const name =
-    document.getElementById("collabName").value.trim();
-
-  const contact =
-    document.getElementById("collabContact").value.trim();
-
-  const details =
-    document.getElementById("collabDetails").value.trim();
+    document.getElementById(
+      "collabName"
+    ).value.trim();
 
   requireLogin(() => {
 
     toast(
       "Collaboration request received from " +
-      name +
-      "."
+      name
     );
 
   });
+
 }
 
 
-/* =========================================================
-   AUTOMATIC ASSET LOADING
-========================================================= */
-
-
-/*
-   GitHub Pages / normal server directory listing
-   does NOT reliably give browser JavaScript a list of
-   every file inside /assets.
-
-   Therefore this system uses the GitHub API to discover
-   files automatically.
-*/
+/* =====================================================
+   GITHUB ASSETS
+===================================================== */
 
 async function getAssetFiles() {
 
-  const repoOwner = "rik8945-ctrl";
-  const repoName = "riya-roy-creation";
+  const repoOwner =
+    "rik8945-ctrl";
+
+  const repoName =
+    "riya-roy-creation";
 
   const apiUrl =
     `https://api.github.com/repos/${repoOwner}/${repoName}/contents/assets`;
 
-  const response = await fetch(apiUrl);
+
+  const response =
+    await fetch(apiUrl);
+
 
   if (!response.ok) {
-    throw new Error("Unable to read assets.");
+
+    throw new Error(
+      "Could not load assets."
+    );
+
   }
 
-  const files = await response.json();
+
+  const files =
+    await response.json();
+
 
   if (!Array.isArray(files)) {
+
     return [];
+
   }
 
+
   return files;
+
 }
 
 
-/* =========================
-   VIDEO LOADER
-========================= */
+/* =====================================================
+   PURCHASE CHECK
+===================================================== */
+
+function hasPurchased(contentId) {
+
+  if (!state.user) {
+
+    return false;
+
+  }
+
+
+  if (state.user.member) {
+
+    return true;
+
+  }
+
+
+  return state.orders.some(order => {
+
+    return (
+      order.meta &&
+      order.meta.contentId === contentId
+    );
+
+  });
+
+}
+
+
+/* =====================================================
+   PREMIUM VIDEOS
+===================================================== */
 
 async function loadPremiumVideos(files) {
 
   const grid =
-    document.getElementById("premiumVideoGrid");
+    document.getElementById(
+      "premiumVideoGrid"
+    );
 
   if (!grid) return;
 
-  /*
-     Only preview-video*.mp4 is loaded publicly.
 
-     Full premium-video*.mp4 is NOT loaded here.
+  /*
+     ONLY preview-video*.mp4
+     is detected here.
   */
 
-  const previews = files.filter(file => {
+  const previews =
+    files.filter(file => {
 
-    return /^preview-video.*\.mp4$/i.test(file.name);
-  });
+      return /^preview-video.*\.mp4$/i
+        .test(file.name);
+
+    });
 
 
   if (previews.length === 0) {
@@ -460,147 +627,192 @@ async function loadPremiumVideos(files) {
     `;
 
     return;
+
   }
 
 
   grid.innerHTML = "";
 
 
-  previews.forEach((previewFile, index) => {
+  previews.forEach(
+    (previewFile, index) => {
 
-    const number =
-      String(index + 1).padStart(2, "0");
+      const number =
+        String(index + 1)
+          .padStart(2, "0");
 
-    /*
-       preview-video1.mp4
-       becomes
-       premium-video1.mp4
-    */
 
-    const fullFileName =
-      previewFile.name.replace(
-        /^preview-/i,
-        ""
+      /*
+         preview-video1.mp4
+         ↓
+         premium-video1.mp4
+      */
+
+      const fullFileName =
+        previewFile.name.replace(
+          /^preview-/i,
+          ""
+        );
+
+
+      const contentId =
+        "video-" +
+        previewFile.name;
+
+
+      const card =
+        document.createElement(
+          "article"
+        );
+
+      card.className =
+        "content-card";
+
+
+      card.innerHTML = `
+
+        <div class="media">
+
+          <video
+            class="preview-video"
+            muted
+            autoplay
+            playsinline
+            webkit-playsinline
+            preload="metadata"
+            src="${ASSET_PATH}${encodeURIComponent(
+              previewFile.name
+            )}">
+          </video>
+
+          <div class="touch-shield"></div>
+
+          <span class="lock">
+            🔒
+          </span>
+
+          <span class="preview-label">
+            3 SEC PREVIEW
+          </span>
+
+        </div>
+
+
+        <div class="card-body">
+
+          <h3>
+            Premium Video #${number}
+          </h3>
+
+          <p>
+            3-second preview.
+            Unlock for full video.
+          </p>
+
+          <button
+            class="btn primary unlock-video">
+
+            Unlock ₹49
+
+          </button>
+
+        </div>
+
+      `;
+
+
+      grid.appendChild(card);
+
+
+      const video =
+        card.querySelector(
+          ".preview-video"
+        );
+
+
+      const button =
+        card.querySelector(
+          ".unlock-video"
+        );
+
+
+      /*
+         3-second loop
+      */
+
+      setupThreeSecondLoop(
+        video
       );
 
 
-    const contentId =
-      "video-" + previewFile.name;
+      /*
+         Already purchased?
+      */
 
-
-    const card =
-      document.createElement("article");
-
-    card.className = "content-card";
-
-
-    card.innerHTML = `
-      <div class="media video-thumb">
-
-        <video
-          class="preview-video"
-          muted
-          autoplay
-          playsinline
-          webkit-playsinline
-          preload="metadata"
-          src="${ASSET_PATH}${encodeURIComponent(previewFile.name)}">
-        </video>
-
-        <div class="touch-shield"></div>
-
-        <span class="lock">🔒</span>
-
-        <span class="preview-label">
-          3 SEC PREVIEW
-        </span>
-
-      </div>
-
-      <div class="card-body">
-
-        <h3>
-          Premium Video #${number}
-        </h3>
-
-        <p>
-          3-second preview. Unlock for full video.
-        </p>
-
-        <button
-          class="btn primary unlock-video"
-          data-content-id="${contentId}"
-          data-full-file="${escapeHtml(fullFileName)}"
-          data-number="${number}">
-          Unlock ₹49
-        </button>
-
-      </div>
-    `;
-
-
-    grid.appendChild(card);
-
-
-    const video =
-      card.querySelector(".preview-video");
-
-    setupThreeSecondLoop(video);
-
-
-    const button =
-      card.querySelector(".unlock-video");
-
-
-    button.addEventListener("click", () => {
-
-      const id =
-        button.dataset.contentId;
-
-      if (hasPurchased(id)) {
+      if (
+        hasPurchased(contentId)
+      ) {
 
         showFullVideo(
+
           card,
-          id,
-          button.dataset.fullFile,
+
+          fullFileName,
+
           number
-        );
 
-      } else {
-
-        buyContent(
-          `Premium Video #${number}`,
-          "Premium Video",
-          49,
-          id
         );
 
       }
 
-    });
 
+      button.addEventListener(
+        "click",
+        () => {
 
-    /*
-       If already purchased, show full video.
-    */
+          if (
+            hasPurchased(contentId)
+          ) {
 
-    if (hasPurchased(contentId)) {
+            showFullVideo(
 
-      showFullVideo(
-        card,
-        contentId,
-        fullFileName,
-        number
+              card,
+
+              fullFileName,
+
+              number
+
+            );
+
+          } else {
+
+            buyContent(
+
+              "Premium Video #" +
+              number,
+
+              "Premium Video",
+
+              49,
+
+              contentId
+
+            );
+
+          }
+
+        }
       );
-    }
 
-  });
+    }
+  );
+
 }
 
 
-/* =========================
+/* =====================================================
    3 SECOND LOOP
-========================= */
+===================================================== */
 
 function setupThreeSecondLoop(video) {
 
@@ -616,15 +828,17 @@ function setupThreeSecondLoop(video) {
 
       video.currentTime = 0;
 
-      const playPromise =
+      const play =
         video.play();
 
-      if (
-        playPromise &&
-        typeof playPromise.catch === "function"
-      ) {
-        playPromise.catch(() => {});
+      if (play) {
+
+        play.catch(
+          () => {}
+        );
+
       }
+
     }
   );
 
@@ -633,45 +847,44 @@ function setupThreeSecondLoop(video) {
     "timeupdate",
     () => {
 
-      if (video.currentTime >= 3) {
+      if (
+        video.currentTime >= 3
+      ) {
 
         video.currentTime = 0;
 
-        const playPromise =
+        const play =
           video.play();
 
-        if (
-          playPromise &&
-          typeof playPromise.catch === "function"
-        ) {
-          playPromise.catch(() => {});
+        if (play) {
+
+          play.catch(
+            () => {}
+          );
+
         }
+
       }
 
     }
   );
 
-
-  /*
-     Prevent dragging/seeking beyond 3 seconds.
-  */
 
   video.addEventListener(
     "seeking",
     () => {
 
-      if (video.currentTime > 3) {
+      if (
+        video.currentTime > 3
+      ) {
+
         video.currentTime = 0;
+
       }
 
     }
   );
 
-
-  /*
-     Extra protection if the preview ends
-     before exactly 3 seconds.
-  */
 
   video.addEventListener(
     "ended",
@@ -679,44 +892,40 @@ function setupThreeSecondLoop(video) {
 
       video.currentTime = 0;
 
-      const playPromise =
+      const play =
         video.play();
 
-      if (
-        playPromise &&
-        typeof playPromise.catch === "function"
-      ) {
-        playPromise.catch(() => {});
+      if (play) {
+
+        play.catch(
+          () => {}
+        );
+
       }
 
     }
   );
+
 }
 
 
-/* =========================
-   SHOW FULL VIDEO
-========================= */
+/* =====================================================
+   FULL VIDEO AFTER PURCHASE
+===================================================== */
 
 function showFullVideo(
   card,
-  contentId,
   fullFileName,
   number
 ) {
 
-  if (!card) return;
-
-
   const media =
-    card.querySelector(".media");
+    card.querySelector(
+      ".media"
+    );
 
   if (!media) return;
 
-
-  /*
-     NOW ONLY the full video is loaded.
-  */
 
   media.innerHTML = `
 
@@ -726,47 +935,62 @@ function showFullVideo(
       preload="metadata"
       controlsList="nodownload"
       disablepictureinpicture
-      src="${ASSET_PATH}${encodeURIComponent(fullFileName)}">
+      src="${ASSET_PATH}${encodeURIComponent(
+        fullFileName
+      )}">
     </video>
 
   `;
 
 
   const button =
-    card.querySelector(".unlock-video");
+    card.querySelector(
+      ".unlock-video"
+    );
 
 
   if (button) {
 
-    button.textContent = "Unlocked ✓";
+    button.textContent =
+      "Unlocked ✓";
 
     button.disabled = true;
 
-    button.style.opacity = ".6";
   }
 
 }
 
 
-/* =========================================================
-   AUTOMATIC PHOTO LOADING
-========================================================= */
+/* =====================================================
+   PREMIUM PHOTOS
+===================================================== */
 
 async function loadPremiumPhotos(files) {
 
   const grid =
-    document.getElementById("premiumPhotoGrid");
+    document.getElementById(
+      "premiumPhotoGrid"
+    );
 
   if (!grid) return;
 
 
-  const photos = files.filter(file => {
+  /*
+     profile.jpg is EXCLUDED.
+  */
 
-    return /\.(png|jpg|jpeg|webp)$/i.test(
-      file.name
-    );
+  const photos =
+    files.filter(file => {
 
-  });
+      return (
+        /\.(jpg|jpeg|png|webp)$/i
+          .test(file.name)
+        &&
+        file.name.toLowerCase()
+          !== "profile.jpg"
+      );
+
+    });
 
 
   if (photos.length === 0) {
@@ -778,90 +1002,116 @@ async function loadPremiumPhotos(files) {
     `;
 
     return;
+
   }
 
 
   grid.innerHTML = "";
 
 
-  photos.forEach((photoFile, index) => {
+  photos.forEach(
+    (photoFile, index) => {
 
-    const number =
-      String(index + 1).padStart(2, "0");
-
-
-    const contentId =
-      "photo-" + photoFile.name;
+      const number =
+        String(index + 1)
+          .padStart(2, "0");
 
 
-    const card =
-      document.createElement("article");
-
-    card.className = "content-card";
-
-
-    card.innerHTML = `
-
-      <div class="media photo-thumb">
-
-        <img
-          class="photo-preview"
-          src="${ASSET_PATH}${encodeURIComponent(photoFile.name)}"
-          alt="Premium Photo"
-          loading="lazy">
-
-        <span class="lock">🔒</span>
-
-        <span class="preview-label">
-          LOCKED
-        </span>
-
-      </div>
-
-      <div class="card-body">
-
-        <h3>
-          Premium Photo #${number}
-        </h3>
-
-        <p>
-          Light blurred preview. Unlock to view clearly.
-        </p>
-
-        <button
-          class="btn primary unlock-photo">
-          Unlock ₹19
-        </button>
-
-      </div>
-    `;
+      const contentId =
+        "photo-" +
+        photoFile.name;
 
 
-    grid.appendChild(card);
+      const card =
+        document.createElement(
+          "article"
+        );
+
+      card.className =
+        "content-card";
 
 
-    const image =
-      card.querySelector(".photo-preview");
+      card.innerHTML = `
 
-    const button =
-      card.querySelector(".unlock-photo");
+        <div class="media">
+
+          <img
+            class="photo-preview"
+            src="${ASSET_PATH}${encodeURIComponent(
+              photoFile.name
+            )}"
+            alt="Premium Photo"
+            loading="lazy">
+
+          <span class="lock">
+            🔒
+          </span>
+
+          <span class="preview-label">
+            LOCKED
+          </span>
+
+        </div>
 
 
-    if (hasPurchased(contentId)) {
+        <div class="card-body">
 
-      unlockPhoto(
-        card,
-        image,
-        button
-      );
+          <h3>
+            Premium Photo #${number}
+          </h3>
 
-    } else {
+          <p>
+            Light blurred preview.
+            Unlock to view clearly.
+          </p>
+
+          <button
+            class="btn primary unlock-photo">
+
+            Unlock ₹19
+
+          </button>
+
+        </div>
+
+      `;
+
+
+      grid.appendChild(card);
+
+
+      const image =
+        card.querySelector(
+          ".photo-preview"
+        );
+
+
+      const button =
+        card.querySelector(
+          ".unlock-photo"
+        );
+
+
+      if (
+        hasPurchased(contentId)
+      ) {
+
+        unlockPhoto(
+          card,
+          image,
+          button
+        );
+
+      }
+
 
       button.addEventListener(
         "click",
         () => {
 
-          if (hasPurchased(contentId)) {
+          if (
+            hasPurchased(contentId)
+          ) {
 
             unlockPhoto(
               card,
@@ -869,29 +1119,35 @@ async function loadPremiumPhotos(files) {
               button
             );
 
-            return;
+          } else {
+
+            buyContent(
+
+              "Premium Photo #" +
+              number,
+
+              "Premium Photo",
+
+              19,
+
+              contentId
+
+            );
+
           }
-
-
-          buyContent(
-            `Premium Photo #${number}`,
-            "Premium Photo",
-            19,
-            contentId
-          );
 
         }
       );
 
     }
+  );
 
-  });
 }
 
 
-/* =========================
+/* =====================================================
    UNLOCK PHOTO
-========================= */
+===================================================== */
 
 function unlockPhoto(
   card,
@@ -902,36 +1158,43 @@ function unlockPhoto(
   if (!image) return;
 
 
-  /*
-     The same original asset is displayed clearly
-     after purchase.
-  */
-
   image.classList.remove(
     "photo-preview"
   );
 
 
-  image.style.filter = "none";
+  image.style.filter =
+    "none";
 
-  image.style.transform = "none";
+  image.style.transform =
+    "none";
 
-  image.style.opacity = "1";
+  image.style.opacity =
+    "1";
 
 
   const lock =
-    card.querySelector(".lock");
+    card.querySelector(
+      ".lock"
+    );
 
   if (lock) {
+
     lock.remove();
+
   }
 
 
   const label =
-    card.querySelector(".preview-label");
+    card.querySelector(
+      ".preview-label"
+    );
 
   if (label) {
-    label.textContent = "UNLOCKED ✓";
+
+    label.textContent =
+      "UNLOCKED ✓";
+
   }
 
 
@@ -940,65 +1203,17 @@ function unlockPhoto(
     button.textContent =
       "Unlocked ✓";
 
-    button.disabled = true;
+    button.disabled =
+      true;
 
-    button.style.opacity = ".6";
   }
 
 }
 
 
-/* =========================
-   UNLOCK AFTER PAYMENT
-========================= */
-
-function unlockPurchasedContent(order) {
-
-  if (!order || !order.meta) {
-    return;
-  }
-
-
-  const contentId =
-    order.meta.contentId;
-
-
-  if (!contentId) {
-
-    /*
-       Membership purchase
-    */
-
-    if (
-      order.type === "Membership"
-    ) {
-
-      if (state.user) {
-
-        state.user.member = true;
-
-        save();
-
-        toast(
-          "Membership activated."
-        );
-
-        loadAllPremiumContent();
-      }
-
-    }
-
-    return;
-  }
-
-
-  loadAllPremiumContent();
-}
-
-
-/* =========================
-   RELOAD PREMIUM CONTENT
-========================= */
+/* =====================================================
+   LOAD EVERYTHING
+===================================================== */
 
 async function loadAllPremiumContent() {
 
@@ -1007,39 +1222,31 @@ async function loadAllPremiumContent() {
     const files =
       await getAssetFiles();
 
-    await loadPremiumVideos(files);
 
-    await loadPremiumPhotos(files);
+    await loadPremiumVideos(
+      files
+    );
+
+
+    await loadPremiumPhotos(
+      files
+    );
 
   } catch (error) {
 
     console.error(
-      "Premium content error:",
+      "Asset loading error:",
       error
     );
 
   }
+
 }
 
 
-/* =========================
-   HTML ESCAPE
-========================= */
-
-function escapeHtml(value) {
-
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-
-/* =========================
-   AGE GATE SUPPORT
-========================= */
+/* =====================================================
+   AGE SUPPORT
+===================================================== */
 
 function confirmAge() {
 
@@ -1049,17 +1256,59 @@ function confirmAge() {
   );
 
   const gate =
-    document.getElementById("ageGate");
+    document.getElementById(
+      "ageGate"
+    );
 
   if (gate) {
-    gate.style.display = "none";
+
+    gate.style.display =
+      "none";
+
   }
+
 }
 
 
-/* =========================
-   START WEBSITE
-========================= */
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
