@@ -1,1637 +1,608 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>RIYA ROY Creation</title>
+  <title>RIYA ROY Creation</title>
 
-<meta name="description" content="RIYA ROY Creation — Premium Content, Membership, Promotion and Brand Collaboration.">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-<link rel="stylesheet" href="styles.css">
+    body {
+      font-family: Arial, sans-serif;
+      background: #0b0b0f;
+      color: #fff;
+    }
 
-<style>
-/* =========================
-   AGE GATE
-========================= */
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-#ageGate {
-  position: fixed;
-  inset: 0;
-  background: rgba(10, 10, 15, 0.98);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999999;
-  padding: 20px;
-}
+    button {
+      cursor: pointer;
+    }
 
+    .container {
+      width: min(1150px, 92%);
+      margin: auto;
+    }
 
-/* =========================
-   VIDEO PREVIEW
-========================= */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,14,.96);
+      border-bottom: 1px solid #292932;
+      padding: 16px 0;
+    }
 
-.preview-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: #ff2d55;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 6px;
-  letter-spacing: 0.5px;
-  z-index: 20;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-}
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
 
-.teaser-video-container {
-  position: relative;
-  width: 100%;
-  height: 250px;
-  background: #000;
-  border-radius: 12px;
-  overflow: hidden;
-}
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+    }
 
-.teaser-video-container video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
 
-/*
-  Transparent shield.
-  This prevents normal touching/clicking directly
-  on the preview video.
-*/
-.touch-shield {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  background: transparent;
-  cursor: default;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
-}
+    .nav-links a {
+      color: #ccc;
+      font-size: 14px;
+    }
 
+    .hero {
+      padding: 90px 0;
+      text-align: center;
+      background:
+        radial-gradient(circle at top, #3b1748 0, #0b0b0f 55%);
+    }
 
-/* =========================
-   PREMIUM PHOTO LOCK
-========================= */
+    .hero h1 {
+      font-size: clamp(38px, 7vw, 72px);
+      margin-bottom: 18px;
+    }
 
-.teaser-photo-container {
-  position: relative;
-  width: 100%;
-  height: 250px;
-  background: #111;
-  border-radius: 12px;
-  overflow: hidden;
-}
+    .hero p {
+      color: #bbb;
+      max-width: 700px;
+      margin: auto;
+      line-height: 1.7;
+    }
 
-.teaser-photo-container img {
-  width: 100%;
-  height: 100%;
+    .section {
+      padding: 65px 0;
+    }
 
-  /*
-    Strong blur for locked preview
-  */
-  filter: blur(25px);
-  -webkit-filter: blur(25px);
+    .section-title {
+      margin-bottom: 28px;
+    }
 
-  /*
-    Prevent blurred edges from showing
-  */
-  transform: scale(1.12);
+    .section-title h2 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
 
-  opacity: 0.55;
+    .section-title p {
+      color: #999;
+    }
 
-  user-select: none;
-  -webkit-user-select: none;
-  pointer-events: none;
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+    }
 
-  transition: filter 0.3s ease,
-              opacity 0.3s ease,
-              transform 0.3s ease;
-}
+    .content-card {
+      background: #15151b;
+      border: 1px solid #292933;
+      border-radius: 18px;
+      overflow: hidden;
+    }
 
+    .media {
+      position: relative;
+      height: 340px;
+      overflow: hidden;
+      background: #050507;
+    }
 
-/* Center lock overlay */
+    .media video,
+    .media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
-.locked-badge-center {
-  position: absolute;
-  inset: 0;
+    /* 3-second preview */
+    .preview-video {
+      pointer-events: none;
+    }
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    .touch-shield {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+    }
 
-  z-index: 6;
+    /* LIGHT BLUR — not heavy blur */
+    .photo-preview {
+      filter: blur(7px);
+      transform: scale(1.04);
+      opacity: .78;
+    }
 
-  background: rgba(0, 0, 0, 0.45);
+    .lock {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 6;
+      background: rgba(0,0,0,.72);
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+    }
 
-  pointer-events: none;
-}
+    .preview-label {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      z-index: 6;
+      background: rgba(0,0,0,.7);
+      padding: 7px 11px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
 
-.locked-badge-center span {
-  font-size: 38px;
-  margin-bottom: 6px;
-}
+    .card-body {
+      padding: 18px;
+    }
 
-.locked-badge-center strong {
-  color: #fff;
-  font-size: 13px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
+    .card-body h3 {
+      margin-bottom: 8px;
+    }
 
+    .card-body p {
+      color: #999;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
 
-/* =========================
-   LOCKED CONTENT
-========================= */
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 17px;
+      font-weight: 700;
+    }
 
-.locked-content {
-  position: relative;
-}
+    .primary {
+      background: #fff;
+      color: #000;
+    }
 
-.locked-content::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
+    .secondary {
+      background: #25252d;
+      color: #fff;
+    }
 
+    .empty {
+      color: #777;
+      padding: 25px;
+      border: 1px dashed #333;
+      border-radius: 14px;
+    }
 
-/* =========================
-   MOBILE
-========================= */
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
 
-@media (max-width: 600px) {
+    .plan {
+      background: #15151b;
+      border: 1px solid #292933;
+      border-radius: 16px;
+      padding: 25px;
+    }
 
-  .teaser-video-container,
-  .teaser-photo-container {
-    height: 230px;
-  }
+    .plan h3 {
+      margin-bottom: 10px;
+    }
 
-  .preview-badge {
-    font-size: 10px;
-    padding: 4px 8px;
-  }
-}
-</style>
+    .price {
+      font-size: 30px;
+      font-weight: 800;
+      margin: 15px 0;
+    }
+
+    form {
+      display: grid;
+      gap: 12px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: 1px solid #333;
+      background: #111117;
+      color: #fff;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    footer {
+      border-top: 1px solid #292932;
+      padding: 35px 0;
+      color: #777;
+      text-align: center;
+    }
+
+    /* MODALS */
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0,0,0,.8);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal-box {
+      width: min(480px, 100%);
+      margin: 70px auto;
+      background: #15151b;
+      border: 1px solid #333;
+      border-radius: 18px;
+      padding: 25px;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      right: 15px;
+      top: 12px;
+      background: none;
+      border: 0;
+      color: #fff;
+      font-size: 25px;
+    }
+
+    .modal-box h2 {
+      margin-bottom: 18px;
+    }
+
+    .payment-upi {
+      background: #0e0e13;
+      border: 1px solid #333;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      word-break: break-all;
+    }
+
+    .gap {
+      height: 12px;
+    }
+
+    @media(max-width:700px) {
+      .nav {
+        flex-direction: column;
+      }
+
+      .nav-links {
+        justify-content: center;
+      }
+
+      .media {
+        height: 320px;
+      }
+    }
+  </style>
 </head>
-
 
 <body>
 
+<header>
+  <div class="container nav">
+    <div class="logo">RIYA ROY Creation</div>
 
-<!-- =====================================================
-     AGE GATE
-===================================================== -->
-
-<div id="ageGate">
-
-  <div class="gate-card">
-
-    <div class="brand-mark">RR</div>
-
-    <h1>RIYA ROY Creation</h1>
-
-    <p>18+ confirmation required to enter.</p>
-
-    <p class="muted">
-      I confirm that I am 18 years or older.
-    </p>
-
-    <div class="gate-actions">
-
-      <button
-        class="btn primary"
-        onclick="confirmAge()">
-        Yes, Enter
-      </button>
-
-      <button
-        class="btn ghost"
-        onclick="location.href='https://www.google.com/'">
-        No, Exit
-      </button>
-
-    </div>
-
+    <nav class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#premium-video">Videos</a>
+      <a href="#premium-photo">Photos</a>
+      <a href="#membership">Membership</a>
+      <a href="#promotion">Promotion</a>
+      <a href="javascript:void(0)" onclick="openAccount()">Account</a>
+    </nav>
   </div>
-
-</div>
-
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
-<header class="topbar">
-
-  <a
-    class="logo"
-    href="#home"
-    onclick="closeMenu()">
-    RIYA ROY <span>Creation</span>
-  </a>
-
-  <button
-    class="menu-btn"
-    onclick="toggleMenu()">
-    ☰
-  </button>
-
-  <nav id="nav">
-
-    <a href="#home">Home</a>
-
-    <a href="#premium-video">
-      Premium Video
-    </a>
-
-    <a href="#premium-photo">
-      Premium Photo
-    </a>
-
-    <a href="#exclusive-video">
-      Exclusive Video
-    </a>
-
-    <a href="#membership">
-      Membership
-    </a>
-
-    <a href="#promote">
-      Promote With Me
-    </a>
-
-    <a href="#collab">
-      Brand Collaboration
-    </a>
-
-    <button
-      class="nav-account"
-      onclick="openAccount()">
-      My Account
-    </button>
-
-  </nav>
-
 </header>
 
 
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
 <main>
 
-
-<!-- =====================================================
-     HERO
-===================================================== -->
-
-<section id="home" class="hero">
-
-  <div class="hero-copy">
-
-    <p class="eyebrow">
-      CREATOR • PREMIUM CONTENT • COLLABORATION
-    </p>
-
-    <h1>
-      Premium content.<br>
-      <span>Your space to explore.</span>
-    </h1>
-
+<section class="hero" id="home">
+  <div class="container">
+    <h1>RIYA ROY Creation</h1>
     <p>
-      Welcome to RIYA ROY Creation —
-      premium photos, videos, exclusive content,
-      memberships and promotion services in one place.
+      Premium videos, photos, membership and exclusive creator content.
     </p>
-
-    <div class="hero-actions">
-
-      <a
-        class="btn primary"
-        href="#membership">
-        Join Membership
-      </a>
-
-      <a
-        class="btn ghost"
-        href="#promote">
-        Promote With Me
-      </a>
-
-    </div>
-
-    <div class="socials">
-
-      <a
-        href="https://www.instagram.com/riya_roy5910"
-        target="_blank">
-        Instagram
-      </a>
-
-      <a
-        href="https://www.facebook.com/share/1JEAUP6VeA/"
-        target="_blank">
-        Facebook
-      </a>
-
-      <a
-        href="https://youtube.com/@riya_roy_5910"
-        target="_blank">
-        YouTube
-      </a>
-
-    </div>
-
   </div>
-
-
-  <div class="hero-art">
-
-    <div class="glow"></div>
-
-    <img
-      src="assets/premium-photo.png"
-      alt="RIYA ROY Creation">
-
-  </div>
-
 </section>
 
 
-<!-- =====================================================
-     TRUST STRIP
-===================================================== -->
+<!-- PREMIUM VIDEO -->
 
-<section class="trust-strip">
+<section class="section" id="premium-video">
+  <div class="container">
 
-  <div>
-    <strong>3</strong>
-    <span>Premium categories</span>
+    <div class="section-title">
+      <h2>Premium Videos</h2>
+      <p>3-second preview • Full video after unlock</p>
+    </div>
+
+    <div id="premiumVideoGrid" class="content-grid">
+      <div class="empty">Loading premium videos...</div>
+    </div>
+
   </div>
-
-  <div>
-    <strong>₹19</strong>
-    <span>Photo from</span>
-  </div>
-
-  <div>
-    <strong>₹49</strong>
-    <span>Video from</span>
-  </div>
-
-  <div>
-    <strong>₹99</strong>
-    <span>Membership from</span>
-  </div>
-
 </section>
 
 
-<!-- =====================================================
-     PREMIUM VIDEO
-===================================================== -->
+<!-- PREMIUM PHOTO -->
 
-<section
-  class="section"
-  id="premium-video">
+<section class="section" id="premium-photo">
+  <div class="container">
 
-  <div class="section-head">
-
-    <div>
-
-      <p class="eyebrow">01</p>
-
-      <h2>Premium Video</h2>
-
+    <div class="section-title">
+      <h2>Premium Photos</h2>
+      <p>Preview available • Unlock to view clearly</p>
     </div>
 
-    <span class="price-pill">
-      ₹49 each
-    </span>
+    <div id="premiumPhotoGrid" class="content-grid">
+      <div class="empty">Loading premium photos...</div>
+    </div>
 
   </div>
+</section>
 
 
-  <div class="content-grid">
+<!-- MEMBERSHIP -->
 
+<section class="section" id="membership">
+  <div class="container">
 
-    <!-- VIDEO 01 -->
+    <div class="section-title">
+      <h2>Membership</h2>
+      <p>Choose your membership plan.</p>
+    </div>
 
-    <article class="content-card">
+    <div class="plans">
 
-      <div class="teaser-video-container">
-
-        <span class="preview-badge">
-          3s PREVIEW
-        </span>
-
-        <video
-          class="loop-3s"
-          muted
-          playsinline
-          webkit-playsinline
-          disablepictureinpicture
-          disableremoteplayback
-          preload="metadata"
-          src="assets/premium-video.mp4">
-        </video>
-
-        <div class="touch-shield"></div>
-
-      </div>
-
-
-      <div class="card-body">
-
-        <h3>
-          Premium Video #01
-        </h3>
-
-        <p>
-          3-second preview only.
-          Full HD video locked.
-        </p>
-
-        <button
-          class="btn small primary"
-          onclick="buyContent(
-            'Premium Video #01',
-            'Premium Video',
-            49
-          )">
-
-          Unlock ₹49
-
+      <div class="plan">
+        <h3>Monthly</h3>
+        <div class="price">₹99</div>
+        <p>Access premium membership content.</p>
+        <button class="btn primary"
+          onclick="buyMembership('Monthly Membership',99)">
+          Join Now
         </button>
-
       </div>
 
-    </article>
-
-
-
-    <!-- VIDEO 02 -->
-
-    <article class="content-card">
-
-      <div class="teaser-video-container">
-
-        <span class="preview-badge">
-          3s PREVIEW
-        </span>
-
-        <video
-          class="loop-3s"
-          muted
-          playsinline
-          webkit-playsinline
-          disablepictureinpicture
-          disableremoteplayback
-          preload="metadata"
-          src="assets/premium-video2.mp4">
-        </video>
-
-        <div class="touch-shield"></div>
-
-      </div>
-
-
-      <div class="card-body">
-
-        <h3>
-          Premium Video #02
-        </h3>
-
-        <p>
-          3-second preview only.
-          Full HD video locked.
-        </p>
-
-        <button
-          class="btn small primary"
-          onclick="buyContent(
-            'Premium Video #02',
-            'Premium Video',
-            49
-          )">
-
-          Unlock ₹49
-
+      <div class="plan">
+        <h3>Yearly</h3>
+        <div class="price">₹499</div>
+        <p>Long-term premium membership.</p>
+        <button class="btn primary"
+          onclick="buyMembership('Yearly Membership',499)">
+          Join Now
         </button>
-
       </div>
 
-    </article>
-
-
+    </div>
   </div>
-
 </section>
 
 
-<!-- =====================================================
-     PREMIUM PHOTO
-===================================================== -->
+<!-- PROMOTION -->
 
-<section
-  class="section alt"
-  id="premium-photo">
+<section class="section" id="promotion">
+  <div class="container">
 
-  <div class="section-head">
-
-    <div>
-
-      <p class="eyebrow">02</p>
-
-      <h2>Premium Photo</h2>
-
+    <div class="section-title">
+      <h2>Promotion</h2>
+      <p>Submit your promotion request.</p>
     </div>
 
-    <span class="price-pill">
-      ₹19 each
-    </span>
-
-  </div>
-
-
-  <div class="content-grid">
-
-
-    <!-- PHOTO 01 -->
-
-    <article class="content-card">
-
-      <div class="teaser-photo-container">
-
-        <img
-          src="assets/premium-photo.png"
-          alt="Premium Photo #01"
-          draggable="false">
-
-        <div class="locked-badge-center">
-
-          <span>🔒</span>
-
-          <strong>
-            LOCKED PHOTO
-          </strong>
-
-        </div>
-
-      </div>
-
-
-      <div class="card-body">
-
-        <h3>
-          Premium Photo #01
-        </h3>
-
-        <p>
-          Ultra HD photoshoot set.
-          Full view locked.
-        </p>
-
-        <button
-          class="btn small primary"
-          onclick="buyContent(
-            'Premium Photo #01',
-            'Premium Photo',
-            19
-          )">
-
-          Unlock ₹19
-
-        </button>
-
-      </div>
-
-    </article>
-
-
-
-    <!-- PHOTO 02 -->
-
-    <article class="content-card">
-
-      <div class="teaser-photo-container">
-
-        <img
-          src="assets/premium-photo2.png"
-          alt="Premium Photo #02"
-          draggable="false">
-
-        <div class="locked-badge-center">
-
-          <span>🔒</span>
-
-          <strong>
-            LOCKED PHOTO
-          </strong>
-
-        </div>
-
-      </div>
-
-
-      <div class="card-body">
-
-        <h3>
-          Premium Photo #02
-        </h3>
-
-        <p>
-          Ultra HD photoshoot set.
-          Full view locked.
-        </p>
-
-        <button
-          class="btn small primary"
-          onclick="buyContent(
-            'Premium Photo #02',
-            'Premium Photo',
-            19
-          )">
-
-          Unlock ₹19
-
-        </button>
-
-      </div>
-
-    </article>
-
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     EXCLUSIVE VIDEO
-===================================================== -->
-
-<section
-  class="section"
-  id="exclusive-video">
-
-  <div class="section-head">
-
-    <div>
-
-      <p class="eyebrow">03</p>
-
-      <h2>Exclusive Video</h2>
-
-    </div>
-
-    <span class="price-pill">
-      ₹59 each
-    </span>
-
-  </div>
-
-
-  <div class="content-grid">
-
-    <article class="content-card">
-
-      <div class="media placeholder">
-
-        <div>
-
-          <span>
-            EXCLUSIVE
-          </span>
-
-          <small>
-            New content can be published
-            from Admin Panel
-          </small>
-
-        </div>
-
-        <span class="lock">
-          🔒
-        </span>
-
-      </div>
-
-
-      <div class="card-body">
-
-        <h3>
-          Exclusive Video
-        </h3>
-
-        <p>
-          Available to active members
-          or by single purchase.
-        </p>
-
-        <button
-          class="btn small primary"
-          onclick="buyContent(
-            'Exclusive Video #01',
-            'Exclusive Video',
-            59
-          )">
-
-          Unlock ₹59
-
-        </button>
-
-      </div>
-
-    </article>
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     MEMBERSHIP
-===================================================== -->
-
-<section
-  class="section membership"
-  id="membership">
-
-  <div class="section-head">
-
-    <div>
-
-      <p class="eyebrow">
-        MEMBERSHIP
-      </p>
-
-      <h2>
-        Choose your access
-      </h2>
-
-    </div>
-
-    <span class="price-pill">
-      Manual renewal
-    </span>
-
-  </div>
-
-
-  <div class="plans">
-
-
-    <article class="plan">
-
-      <span>
-        Monthly
-      </span>
-
-      <strong>
-        ₹99
-      </strong>
-
-      <small>
-        30 days
-      </small>
-
-      <button
-        class="btn primary"
-        onclick="buyMembership(
-          'Monthly',
-          99
-        )">
-
-        Join
-
-      </button>
-
-    </article>
-
-
-
-    <article class="plan featured">
-
-      <span>
-        3 Months
-      </span>
-
-      <strong>
-        ₹249
-      </strong>
-
-      <small>
-        90 days
-      </small>
-
-      <button
-        class="btn primary"
-        onclick="buyMembership(
-          '3 Months',
-          249
-        )">
-
-        Join
-
-      </button>
-
-    </article>
-
-
-
-    <article class="plan">
-
-      <span>
-        Yearly
-      </span>
-
-      <strong>
-        ₹999
-      </strong>
-
-      <small>
-        365 days
-      </small>
-
-      <button
-        class="btn primary"
-        onclick="buyMembership(
-          'Yearly',
-          999
-        )">
-
-        Join
-
-      </button>
-
-    </article>
-
-
-  </div>
-
-
-  <p class="note">
-
-    Active membership includes Premium Video,
-    Premium Photo and Exclusive Video,
-    including new content added during
-    the active period. No auto-renewal.
-
-  </p>
-
-</section>
-
-
-<!-- =====================================================
-     PROMOTION
-===================================================== -->
-
-<section
-  class="section alt"
-  id="promote">
-
-  <div class="section-head">
-
-    <div>
-
-      <p class="eyebrow">
-        PROMOTE WITH ME
-      </p>
-
-      <h2>
-        Promotion services
-      </h2>
-
-    </div>
-
-  </div>
-
-
-  <form
-    class="form-card"
-    onsubmit="submitPromotion(event)">
-
-
-    <label>
-
-      Service
-
-      <select
-        id="promoService"
-        required>
-
-        <option value="">
-          Choose service
-        </option>
-
-        <option>
-          Instagram Story Share — ₹15 / 1 day
-        </option>
-
-        <option>
-          Instagram Story Mention — ₹30 / 7 days
-        </option>
-
-        <option>
-          Instagram Post Share — ₹30 / 7 days
-        </option>
-
-        <option>
-          Instagram Post Mention — ₹30 / 5 days
-        </option>
-
-        <option>
-          Instagram Reel Promotion — ₹30 / 5 days
-        </option>
-
-        <option>
-          Facebook Promotion — ₹30 / 5 days
-        </option>
-
-        <option>
-          Custom Promotion — Contact for Price
-        </option>
-
-      </select>
-
-    </label>
-
-
-    <div class="two">
-
-      <label>
-
-        Promotion Date
-
-        <input
-          id="promoDate"
-          type="date"
-          required>
-
-      </label>
-
-
-      <label>
-
-        Social Media Link
-
-        <input
-          id="promoLink"
-          type="url"
-          placeholder="https://..."
-          required>
-
-      </label>
-
-    </div>
-
-
-    <button
-      class="btn primary"
-      type="submit">
-
-      Continue to Payment
-
-    </button>
-
-  </form>
-
-</section>
-
-
-<!-- =====================================================
-     BRAND COLLABORATION
-===================================================== -->
-
-<section
-  class="section"
-  id="collab">
-
-  <div class="section-head">
-
-    <div>
-
-      <p class="eyebrow">
-        BRAND COLLABORATION
-      </p>
-
-      <h2>
-        Let's work together
-      </h2>
-
-    </div>
-
-  </div>
-
-
-  <form
-    class="form-card"
-    onsubmit="submitCollab(event)">
-
-
-    <div class="two">
-
-      <label>
-        Brand Name
-        <input
-          id="brandName"
-          required>
-      </label>
-
-      <label>
-        Contact Person
-        <input
-          id="contactPerson"
-          required>
-      </label>
-
-    </div>
-
-
-    <div class="two">
-
-      <label>
-        Mobile / WhatsApp
-        <input
-          id="brandMobile"
-          required>
-      </label>
-
-      <label>
-        Email
-        <input
-          id="brandEmail"
-          type="email"
-          required>
-      </label>
-
-    </div>
-
-
-    <div class="two">
-
-      <label>
-        Brand / Product Name
-        <input
-          id="productName"
-          required>
-      </label>
-
-      <label>
-        Preferred Date
-        <input
-          id="preferredDate"
-          type="date">
-      </label>
-
-    </div>
-
-
-    <label>
-
-      Collaboration Type
-
-      <select
-        id="collabType"
-        required>
-
-        <option>
-          Brand Collaboration
-        </option>
-
-        <option>
-          Product Promotion
-        </option>
-
-        <option>
-          Sponsored Video
-        </option>
-
-        <option>
-          Custom AI Video Campaign
-        </option>
-
-        <option>
-          Long-term Collaboration
-        </option>
-
-      </select>
-
-    </label>
-
-
-    <label>
-
-      Budget
-
-      <input
-        id="budget"
-        placeholder="Your budget">
-
-    </label>
-
-
-    <label>
-
-      Message / Requirement
-
-      <textarea
-        id="collabMessage"
-        rows="4"
+    <form onsubmit="submitPromotion(event)">
+      <input id="promotionName" placeholder="Your Name" required>
+      <input id="promotionContact" placeholder="Mobile / Contact" required>
+      <textarea id="promotionDetails"
+        placeholder="Promotion details"
         required></textarea>
 
-    </label>
+      <button class="btn primary" type="submit">
+        Submit Promotion — ₹30
+      </button>
+    </form>
 
-
-    <button
-      class="btn primary"
-      type="submit">
-
-      Send Collaboration Request
-
-    </button>
-
-  </form>
-
+  </div>
 </section>
 
 
-<!-- =====================================================
-     CTA
-===================================================== -->
+<!-- COLLAB -->
 
-<section class="section cta">
+<section class="section" id="collaboration">
+  <div class="container">
 
-  <div>
+    <div class="section-title">
+      <h2>Collaboration</h2>
+      <p>For collaboration enquiries.</p>
+    </div>
 
-    <p class="eyebrow">
-      RIYA ROY CREATION
-    </p>
+    <form onsubmit="submitCollab(event)">
+      <input id="collabName" placeholder="Your Name" required>
+      <input id="collabContact" placeholder="Mobile / Email" required>
+      <textarea id="collabDetails"
+        placeholder="Tell us about your collaboration"
+        required></textarea>
 
-    <h2>
-      Explore. Join. Collaborate.
-    </h2>
-
-    <p>
-      Public browsing is open —
-      login is requested only when
-      an account-required action is performed.
-    </p>
+      <button class="btn primary" type="submit">
+        Send Request
+      </button>
+    </form>
 
   </div>
-
-
-  <button
-    class="btn primary"
-    onclick="openAccount()">
-
-    My Account
-
-  </button>
-
 </section>
 
 </main>
 
 
-<!-- =====================================================
-     FOOTER
-===================================================== -->
-
 <footer>
-
-  <div>
-
-    <strong>
-      RIYA ROY Creation
-    </strong>
-
-    <span>
-      Premium Content • Promotion • Brand Collaboration
-    </span>
-
+  <div class="container">
+    © 2026 RIYA ROY Creation
   </div>
-
-
-  <div class="footer-links">
-
-    <a
-      href="https://www.instagram.com/riya_roy5910"
-      target="_blank">
-      Instagram
-    </a>
-
-    <a
-      href="https://www.facebook.com/share/1JEAUP6VeA/"
-      target="_blank">
-      Facebook
-    </a>
-
-    <a
-      href="https://youtube.com/@riya_roy_5910"
-      target="_blank">
-      YouTube
-    </a>
-
-    <a
-      href="#"
-      onclick="legal('Terms & Conditions')">
-      Terms
-    </a>
-
-    <a
-      href="#"
-      onclick="legal('Privacy Policy')">
-      Privacy
-    </a>
-
-    <a
-      href="#"
-      onclick="legal('Refund Policy')">
-      Refund
-    </a>
-
-  </div>
-
 </footer>
 
 
-<!-- =====================================================
-     TOAST
-===================================================== -->
+<!-- LOGIN MODAL -->
 
-<div id="toast"></div>
+<div class="modal" id="loginModal">
+  <div class="modal-box">
 
+    <button class="close" onclick="closeModal('loginModal')">×</button>
 
-<!-- =====================================================
-     LOGIN MODAL
-===================================================== -->
+    <h2>Login</h2>
 
-<div
-  id="loginModal"
-  class="modal">
-
-  <div class="modal-card">
-
-    <button
-      class="close"
-      onclick="closeModal('loginModal')">
-      ×
-    </button>
-
-
-    <h2>
-      Login with OTP
-    </h2>
-
-
-    <p>
-      Enter your mobile number.
-      OTP verification is required
-      for purchases and protected actions.
-    </p>
-
-
-    <input
-      id="phone"
-      type="tel"
-      inputmode="numeric"
-      placeholder="10-digit mobile number"
-      maxlength="10">
-
-
-    <button
-      class="btn primary full"
-      onclick="sendOtp()">
-
-      Send OTP
-
-    </button>
-
-
-    <div
-      id="otpArea"
-      hidden>
+    <div id="phoneStep">
 
       <input
-        id="otp"
-        placeholder="Demo OTP: 123456"
-        maxlength="6">
+        id="loginPhone"
+        type="tel"
+        maxlength="10"
+        placeholder="Mobile Number">
 
+      <div class="gap"></div>
 
-      <button
-        class="btn primary full"
-        onclick="verifyOtp()">
-
-        Verify OTP
-
+      <button class="btn primary" onclick="sendOtp()">
+        Send OTP
       </button>
 
     </div>
 
-  </div>
+    <div id="otpStep" style="display:none">
 
-</div>
+      <input
+        id="loginOtp"
+        maxlength="6"
+        placeholder="Enter OTP">
 
+      <div class="gap"></div>
 
-<!-- =====================================================
-     PAYMENT MODAL
-===================================================== -->
+      <button class="btn primary" onclick="verifyOtp()">
+        Verify OTP
+      </button>
 
-<div
-  id="paymentModal"
-  class="modal">
-
-  <div class="modal-card">
-
-    <button
-      class="close"
-      onclick="closeModal('paymentModal')">
-      ×
-    </button>
-
-
-    <p class="eyebrow">
-      PAYMENT
-    </p>
-
-
-    <h2 id="payTitle">
-      Payment
-    </h2>
-
-
-    <div class="pay-box">
-
-      <span>
-        Amount
-      </span>
-
-      <strong id="payAmount">
-        ₹0
-      </strong>
-
-      <span>
-        UPI ID
-      </span>
-
-      <code>
-        917679669353@upi
-      </code>
+      <p style="margin-top:12px;color:#777;font-size:12px">
+        Demo OTP: 123456
+      </p>
 
     </div>
 
+  </div>
+</div>
+
+
+<!-- PAYMENT MODAL -->
+
+<div class="modal" id="paymentModal">
+  <div class="modal-box">
+
+    <button class="close" onclick="closeModal('paymentModal')">×</button>
+
+    <h2 id="paymentTitle">Payment</h2>
+
+    <p>
+      Amount:
+      <strong>₹<span id="paymentAmount">0</span></strong>
+    </p>
+
+    <div class="payment-upi">
+      UPI ID:<br>
+      <strong>917679669353@upi</strong>
+    </div>
 
     <a
       id="upiLink"
-      class="btn primary full"
+      class="btn primary"
+      style="display:block;text-align:center"
       href="#">
-
       Open UPI App
-
     </a>
 
+    <div class="gap"></div>
 
     <button
-      class="btn ghost full"
+      class="btn secondary"
+      style="width:100%"
       onclick="markPaymentPending()">
-
       I have paid / Check payment
-
     </button>
 
   </div>
-
 </div>
 
 
-<!-- =====================================================
-     ACCOUNT MODAL
-===================================================== -->
+<!-- ACCOUNT MODAL -->
 
-<div
-  id="accountModal"
-  class="modal">
+<div class="modal" id="accountModal">
+  <div class="modal-box">
 
-  <div class="modal-card wide">
+    <button class="close" onclick="closeModal('accountModal')">×</button>
+
+    <h2>My Account</h2>
+
+    <div id="accountInfo"></div>
+
+    <div class="gap"></div>
 
     <button
-      class="close"
-      onclick="closeModal('accountModal')">
-      ×
+      class="btn secondary"
+      style="width:100%"
+      onclick="logout()">
+      Logout
     </button>
 
-
-    <h2>
-      My Account
-    </h2>
-
-
-    <div id="accountBody"></div>
-
   </div>
-
 </div>
 
-
-<!-- =====================================================
-     PREVIEW CONTROL SCRIPT
-===================================================== -->
-
-<script>
-
-(function () {
-
-  function setupPremiumVideo(video) {
-
-    if (!video) return;
-
-
-    /*
-      Start the preview automatically
-      after metadata becomes available.
-    */
-
-    function startPreview() {
-
-      video.currentTime = 0;
-
-      const playPromise = video.play();
-
-      if (playPromise !== undefined) {
-
-        playPromise.catch(function () {
-          /*
-            Autoplay can be blocked by the browser.
-            The video will remain available as preview.
-          */
-        });
-
-      }
-
-    }
-
-
-    /*
-      Only allow the first 3 seconds.
-    */
-
-    video.addEventListener("timeupdate", function () {
-
-      if (video.currentTime >= 3) {
-
-        video.pause();
-
-        video.currentTime = 3;
-
-      }
-
-    });
-
-
-    /*
-      Never loop the preview.
-    */
-
-    video.addEventListener("ended", function () {
-
-      video.pause();
-
-    });
-
-
-    /*
-      Prevent seeking beyond 3 seconds
-      while the video is locked.
-    */
-
-    video.addEventListener("seeking", function () {
-
-      if (video.currentTime > 3) {
-
-        video.currentTime = 3;
-
-      }
-
-    });
-
-
-    /*
-      Start preview when metadata is ready.
-    */
-
-    if (video.readyState >= 1) {
-
-      startPreview();
-
-    } else {
-
-      video.addEventListener(
-        "loadedmetadata",
-        startPreview,
-        { once: true }
-      );
-
-    }
-
-  }
-
-
-  /*
-    Initialize all premium videos.
-  */
-
-  document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-      const videos =
-        document.querySelectorAll(
-          ".loop-3s"
-        );
-
-
-      videos.forEach(function (video) {
-
-        setupPremiumVideo(video);
-
-      });
-
-    }
-  );
-
-})();
-
-
-/* =====================================================
-   AGE VERIFICATION
-===================================================== */
-
-function confirmAge() {
-
-  sessionStorage.setItem(
-    "age_verified",
-    "1"
-  );
-
-  const gate =
-    document.getElementById("ageGate");
-
-  if (gate) {
-
-    gate.style.display = "none";
-
-  }
-
-}
-
-
-document.addEventListener(
-  "DOMContentLoaded",
-  function () {
-
-    if (
-      sessionStorage.getItem(
-        "age_verified"
-      ) === "1"
-    ) {
-
-      const gate =
-        document.getElementById("ageGate");
-
-      if (gate) {
-
-        gate.style.display = "none";
-
-      }
-
-    }
-
-  }
-);
-
-</script>
-
-
-<!-- =====================================================
-     YOUR EXISTING APP.JS
-===================================================== -->
 
 <script src="app.js"></script>
 
-
 </body>
-  </html>
+</html>
