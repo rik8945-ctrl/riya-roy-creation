@@ -1,210 +1,179 @@
-const state = {
-  user: JSON.parse(localStorage.getItem("rr_user") || "null"),
-  orders: JSON.parse(localStorage.getItem("rr_orders") || "[]")
-};
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RIYA ROY Creation</title>
+<meta name="description" content="RIYA ROY Creation — Premium Content, Membership, Promotion and Brand Collaboration.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="ageGate" class="gate">
+  <div class="gate-card">
+    <div class="brand-mark">RR</div>
+    <h1>RIYA ROY Creation</h1>
+    <p>18+ confirmation required to enter.</p>
+    <p class="muted">I confirm that I am 18 years or older.</p>
+    <div class="gate-actions">
+      <button class="btn primary" onclick="enterSite()">Yes, Enter</button>
+      <button class="btn ghost" onclick="location.href='https://www.google.com/'">No, Exit</button>
+    </div>
+  </div>
+</div>
 
-function save() {
-  localStorage.setItem("rr_user", JSON.stringify(state.user));
-  localStorage.setItem("rr_orders", JSON.stringify(state.orders));
-}
+<header class="topbar">
+  <a class="logo" href="#home" onclick="closeMenu()">RIYA ROY <span>Creation</span></a>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <nav id="nav">
+    <a href="#home">Home</a>
+    <a href="#premium-video">Premium Video</a>
+    <a href="#premium-photo">Premium Photo</a>
+    <a href="#exclusive-video">Exclusive Video</a>
+    <a href="#membership">Membership</a>
+    <a href="#promote">Promote With Me</a>
+    <a href="#collab">Brand Collaboration</a>
+    <button class="nav-account" onclick="openAccount()">My Account</button>
+  </nav>
+</header>
 
-function toast(msg) {
-  const t = document.getElementById("toast");
-  if (!t) return;
-  t.textContent = msg;
-  t.className = "show";
-  setTimeout(() => { t.className = ""; }, 3000);
-}
+<main>
+<section id="home" class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">CREATOR • PREMIUM CONTENT • COLLABORATION</p>
+    <h1>Premium content.<br><span>Your space to explore.</span></h1>
+    <p>Welcome to RIYA ROY Creation — premium photos, videos, exclusive content, memberships and promotion services in one place.</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#membership">Join Membership</a>
+      <a class="btn ghost" href="#promote">Promote With Me</a>
+    </div>
+    <div class="socials">
+      <a href="https://www.instagram.com/riya_roy5910" target="_blank">Instagram</a>
+      <a href="https://www.facebook.com/share/1JEAUP6VeA/" target="_blank">Facebook</a>
+      <a href="https://youtube.com/@riya_roy_5910" target="_blank">YouTube</a>
+    </div>
+  </div>
+  <div class="hero-art">
+    <div class="glow"></div>
+    <img src="assets/premium-photo.png" alt="RIYA ROY Creation">
+  </div>
+</section>
 
-function enterSite() {
-  localStorage.setItem("rr_age_ok", "1");
-  const gate = document.getElementById("ageGate");
-  if (gate) gate.style.display = "none";
-}
+<section class="trust-strip">
+  <div><strong>3</strong><span>Premium categories</span></div>
+  <div><strong>₹19</strong><span>Photo from</span></div>
+  <div><strong>₹49</strong><span>Video from</span></div>
+  <div><strong>₹99</strong><span>Membership from</span></div>
+</section>
 
-function toggleMenu() {
-  const nav = document.getElementById("nav");
-  if (nav) nav.classList.toggle("open");
-}
+<section class="section" id="premium-video">
+  <div class="section-head"><div><p class="eyebrow">01</p><h2>Premium Video</h2></div><span class="price-pill">₹49 each</span></div>
+  <div class="content-grid">
+    <article class="content-card">
+      <div class="media video-thumb"><video muted preload="metadata" src="assets/premium-video.mp4"></video><span class="lock">🔒</span></div>
+      <div class="card-body"><h3>Premium Video #01</h3><p>Member access or lifetime single purchase.</p><button class="btn small primary" onclick="buyContent('Premium Video #01','Premium Video',49)">Unlock ₹49</button></div>
+    </article>
+  </div>
+</section>
 
-function closeMenu() {
-  const nav = document.getElementById("nav");
-  if (nav) nav.classList.remove("open");
-}
+<section class="section alt" id="premium-photo">
+  <div class="section-head"><div><p class="eyebrow">02</p><h2>Premium Photo</h2></div><span class="price-pill">₹19 each</span></div>
+  <div class="content-grid">
+    <article class="content-card">
+      <div class="media photo-thumb"><img src="assets/premium-photo.png" alt="Premium Photo #01"><span class="lock">🔒</span></div>
+      <div class="card-body"><h3>Premium Photo #01</h3><p>View inside the website. No download.</p><button class="btn small primary" onclick="buyContent('Premium Photo #01','Premium Photo',19)">Unlock ₹19</button></div>
+    </article>
+  </div>
+</section>
 
-function openModal(id) {
-  const m = document.getElementById(id);
-  if (m) m.classList.add("open");
-}
+<section class="section" id="exclusive-video">
+  <div class="section-head"><div><p class="eyebrow">03</p><h2>Exclusive Video</h2></div><span class="price-pill">₹59 each</span></div>
+  <div class="content-grid">
+    <article class="content-card">
+      <div class="media placeholder"><div><span>EXCLUSIVE</span><small>New content can be published from Admin Panel</small></div><span class="lock">🔒</span></div>
+      <div class="card-body"><h3>Exclusive Video</h3><p>Available to active members or by single purchase.</p><button class="btn small primary" onclick="buyContent('Exclusive Video #01','Exclusive Video',59)">Unlock ₹59</button></div>
+    </article>
+  </div>
+</section>
 
-function closeModal(id) {
-  const m = document.getElementById(id);
-  if (m) m.classList.remove("open");
-}
+<section class="section membership" id="membership">
+  <div class="section-head"><div><p class="eyebrow">MEMBERSHIP</p><h2>Choose your access</h2></div><span class="price-pill">Manual renewal</span></div>
+  <div class="plans">
+    <article class="plan"><span>Monthly</span><strong>₹99</strong><small>30 days</small><button class="btn primary" onclick="buyMembership('Monthly',99)">Join</button></article>
+    <article class="plan featured"><span>3 Months</span><strong>₹249</strong><small>90 days</small><button class="btn primary" onclick="buyMembership('3 Months',249)">Join</button></article>
+    <article class="plan"><span>Yearly</span><strong>₹999</strong><small>365 days</small><button class="btn primary" onclick="buyMembership('Yearly',999)">Join</button></article>
+  </div>
+  <p class="note">Active membership includes Premium Video, Premium Photo and Exclusive Video, including new content added during the active period. No auto-renewal.</p>
+</section>
 
-function requireLogin(next) {
-  if (state.user) {
-    if (next) next();
-    return true;
-  }
-  openModal("loginModal");
-  window._afterLogin = next;
-  return false;
-}
+<section class="section alt" id="promote">
+  <div class="section-head"><div><p class="eyebrow">PROMOTE WITH ME</p><h2>Promotion services</h2></div></div>
+  <form class="form-card" onsubmit="submitPromotion(event)">
+    <label>Service<select id="promoService" required>
+      <option value="">Choose service</option>
+      <option>Instagram Story Share — ₹15 / 1 day</option>
+      <option>Instagram Story Mention — ₹30 / 7 days</option>
+      <option>Instagram Post Share — ₹30 / 7 days</option>
+      <option>Instagram Post Mention — ₹30 / 5 days</option>
+      <option>Instagram Reel Promotion — ₹30 / 5 days</option>
+      <option>Facebook Promotion — ₹30 / 5 days</option>
+      <option>Custom Promotion — Contact for Price</option>
+    </select></label>
+    <div class="two"><label>Promotion Date<input id="promoDate" type="date" required></label><label>Social Media Link<input id="promoLink" type="url" placeholder="https://..." required></label></div>
+    <button class="btn primary" type="submit">Continue to Payment</button>
+  </form>
+  <p class="note">Admin reviews promotion orders within 24 hours. Status flow: Pending → Approved → Scheduled → Live → Completed / Rejected.</p>
+</section>
 
-function sendOtp() {
-  const p = document.getElementById("phone");
-  if (!p || p.value.length < 10) {
-    alert("Please enter a valid 10-digit mobile number");
-    return;
-  }
-  const area = document.getElementById("otpArea");
-  if (area) area.hidden = false;
-  toast("OTP sent (Demo: 123456)");
-}
+<section class="section" id="collab">
+  <div class="section-head"><div><p class="eyebrow">BRAND COLLABORATION</p><h2>Let's work together</h2></div></div>
+  <form class="form-card" onsubmit="submitCollab(event)">
+    <div class="two"><label>Brand Name<input id="brandName" required></label><label>Contact Person<input id="contactPerson" required></label></div>
+    <div class="two"><label>Mobile / WhatsApp<input id="brandMobile" required></label><label>Email<input id="brandEmail" type="email" required></label></div>
+    <div class="two"><label>Brand / Product Name<input id="productName" required></label><label>Preferred Date<input id="preferredDate" type="date"></label></div>
+    <label>Collaboration Type<select id="collabType" required><option>Brand Collaboration</option><option>Product Promotion</option><option>Sponsored Video</option><option>Custom AI Video Campaign</option><option>Long-term Collaboration</option></select></label>
+    <label>Budget<input id="budget" placeholder="Your budget"></label>
+    <label>Message / Requirement<textarea id="collabMessage" rows="4" required></textarea></label>
+    <button class="btn primary" type="submit">Send Collaboration Request</button>
+  </form>
+</section>
 
-function verifyOtp() {
-  const otp = document.getElementById("otp");
-  const p = document.getElementById("phone");
-  if (!otp || otp.value !== "123456") {
-    alert("Invalid OTP! Use: 123456");
-    return;
-  }
-  state.user = { phone: p.value, member: false };
-  save();
-  closeModal("loginModal");
-  toast("Logged in successfully!");
-  if (window._afterLogin) {
-    window._afterLogin();
-    window._afterLogin = null;
-  }
-}
+<section class="section cta">
+  <div><p class="eyebrow">RIYA ROY CREATION</p><h2>Explore. Join. Collaborate.</h2><p>Public browsing is open — login is requested only when an account-required action is performed.</p></div>
+  <button class="btn primary" onclick="openAccount()">My Account</button>
+</section>
+</main>
 
-function openAccount() {
-  requireLogin(() => {
-    const b = document.getElementById("accountBody");
-    if (b) {
-      b.innerHTML = `
-        <p><strong>Mobile:</strong> ${state.user.phone}</p>
-        <p><strong>Membership:</strong> ${state.user.member ? "Active" : "None"}</p>
-        <p><strong>Purchased Items:</strong> ${state.orders.length}</p>
-      `;
-    }
-    openModal("accountModal");
-  });
-}
+<footer>
+  <div><strong>RIYA ROY Creation</strong><span>Premium Content • Promotion • Brand Collaboration</span></div>
+  <div class="footer-links"><a href="https://www.instagram.com/riya_roy5910" target="_blank">Instagram</a><a href="https://www.facebook.com/share/1JEAUP6VeA/" target="_blank">Facebook</a><a href="https://youtube.com/@riya_roy_5910" target="_blank">YouTube</a><a href="#" onclick="legal('Terms & Conditions')">Terms</a><a href="#" onclick="legal('Privacy Policy')">Privacy</a><a href="#" onclick="legal('Refund Policy')">Refund</a></div>
+</footer>
 
-let pendingPay = null;
+<div id="toast"></div>
 
-function openPayment(title, amount, type, meta = {}) {
-  requireLogin(() => {
-    pendingPay = { title, amount, type, meta, id: "ORD" + Date.now() };
-    const t = document.getElementById("payTitle");
-    const a = document.getElementById("payAmount");
-    const link = document.getElementById("upiLink");
-    if (t) t.textContent = title;
-    if (a) a.textContent = "₹" + amount;
-    if (link) link.href = `upi://pay?pa=917679669353@upi&pn=RIYA%20ROY&am=${amount}&cu=INR`;
-    openModal("paymentModal");
-  });
-}
+<div id="loginModal" class="modal"><div class="modal-card">
+  <button class="close" onclick="closeModal('loginModal')">×</button><h2>Login with OTP</h2><p>Enter your mobile number. OTP verification is required for purchases and protected actions.</p>
+  <input id="phone" type="tel" inputmode="numeric" placeholder="10-digit mobile number" maxlength="10">
+  <button class="btn primary full" onclick="sendOtp()">Send OTP</button>
+  <div id="otpArea" hidden><input id="otp" placeholder="Demo OTP: 123456" maxlength="6"><button class="btn primary full" onclick="verifyOtp()">Verify OTP</button></div>
+</div></div>
 
-function buyContent(title, category, amount) {
-  openPayment(title, amount, category);
-}
+<div id="paymentModal" class="modal"><div class="modal-card">
+  <button class="close" onclick="closeModal('paymentModal')">×</button><p class="eyebrow">PAYMENT</p><h2 id="payTitle">Payment</h2><div class="pay-box"><span>Amount</span><strong id="payAmount">₹0</strong><span>UPI ID</span><code>917679669353@upi</code></div>
+  <a id="upiLink" class="btn primary full" href="#">Open UPI App</a>
+  <p class="note">This free static build includes the UPI intent button. Automatic payment verification requires connecting a UPI payment gateway/backend.</p>
+  <button class="btn ghost full" onclick="markPaymentPending()">I have paid / Check payment</button>
+</div></div>
 
-function buyMembership(plan, amount) {
-  openPayment("Membership - " + plan, amount, "Membership", { plan });
-}
+<div id="accountModal" class="modal"><div class="modal-card wide">
+  <button class="close" onclick="closeModal('accountModal')">×</button><h2>My Account</h2>
+  <div id="accountBody"></div>
+</div></div>
 
-function submitPromotion(e) {
-  e.preventDefault();
-  const service = document.getElementById("promoService").value;
-  openPayment(service, 30, "Promotion");
-}
+<div id="adminModal" class="modal"><div class="modal-card wide">
+  <button class="close" onclick="closeModal('adminModal')">×</button><h2>Admin Panel</h2><p class="note">Demo/local admin view for the free static build.</p>
+  <div class="admin-grid" id="adminStats"></div><div id="adminOrders"></div>
+</div></div>
 
-function submitCollab(e) {
-  e.preventDefault();
-  alert("Collaboration request sent successfully!");
-  e.target.reset();
-}
-
-function markPaymentPending() {
-  if (!pendingPay) return;
-  state.orders.push(pendingPay);
-  save();
-  closeModal("paymentModal");
-  toast("Payment marked as done!");
-}
-
-function legal(title) {
-  alert(title + " details will be updated soon.");
-}
-
-function showAdmin() {
-  openModal("adminModal");
-}
-
-window.openAdmin = showAdmin;
-
-// GitHub Assets Folder Auto-Scanner
-async function loadMediaAutomatically() {
-  const repoOwner = "rik8945-ctrl";
-  const repoName = "riya-roy-creation";
-  const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/assets`;
-
-  const videoGrid = document.querySelector("#premium-video .content-grid");
-  const photoGrid = document.querySelector("#premium-photo .content-grid");
-
-  try {
-    const response = await fetch(apiUrl);
-    const files = await response.json();
-
-    if (!Array.isArray(files)) return;
-
-    const videos = files.filter(f => f.name.endsWith('.mp4'));
-    const photos = files.filter(f => /\.(png|jpg|jpeg|webp)$/i.test(f.name));
-
-    if (videoGrid && videos.length > 0) {
-      videoGrid.innerHTML = videos.map((v, i) => `
-        <article class="content-card">
-          <div class="media video-thumb">
-            <video muted preload="metadata" src="assets/${v.name}" controls playsinline></video>
-            <span class="lock">🔒</span>
-          </div>
-          <div class="card-body">
-            <h3>Premium Video #${String(i + 1).padStart(2, '0')}</h3>
-            <p>Member access or lifetime single purchase.</p>
-            <button class="btn small primary" onclick="buyContent('Premium Video #${i + 1}','Premium Video',49)">Unlock ₹49</button>
-          </div>
-        </article>
-      `).join("");
-    }
-
-    if (photoGrid && photos.length > 0) {
-      photoGrid.innerHTML = photos.map((p, i) => `
-        <article class="content-card">
-          <div class="media photo-thumb">
-            <img src="assets/${p.name}" alt="Premium Photo">
-            <span class="lock">🔒</span>
-          </div>
-          <div class="card-body">
-            <h3>Premium Photo #${String(i + 1).padStart(2, '0')}</h3>
-            <p>View inside the website. No download.</p>
-            <button class="btn small primary" onclick="buyContent('Premium Photo #${i + 1}','Premium Photo',19)">Unlock ₹19</button>
-          </div>
-        </article>
-      `).join("");
-    }
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("rr_age_ok") === "1") {
-    const gate = document.getElementById("ageGate");
-    if (gate) gate.style.display = "none";
-  }
-  loadMediaAutomatically();
-});
+<script src="app.js"></script>
+</body>
+</html>
