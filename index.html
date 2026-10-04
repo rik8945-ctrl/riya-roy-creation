@@ -37,9 +37,9 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(10,10,14,.96);
+      background: rgba(10,10,14,.97);
       border-bottom: 1px solid #292932;
-      padding: 16px 0;
+      padding: 15px 0;
     }
 
     .nav {
@@ -50,13 +50,13 @@
     }
 
     .logo {
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 800;
     }
 
     .nav-links {
       display: flex;
-      gap: 18px;
+      gap: 17px;
       flex-wrap: wrap;
     }
 
@@ -65,16 +65,45 @@
       font-size: 14px;
     }
 
+    /* PROFILE */
+
+    .profile {
+      padding: 55px 0 30px;
+      text-align: center;
+    }
+
+    .profile-photo {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #fff;
+      display: block;
+      margin: auto;
+    }
+
+    .profile h1 {
+      margin-top: 15px;
+      font-size: 30px;
+    }
+
+    .profile p {
+      color: #999;
+      margin-top: 8px;
+    }
+
+    /* HERO */
+
     .hero {
-      padding: 90px 0;
+      padding: 55px 0 75px;
       text-align: center;
       background:
         radial-gradient(circle at top, #3b1748 0, #0b0b0f 55%);
     }
 
-    .hero h1 {
-      font-size: clamp(38px, 7vw, 72px);
-      margin-bottom: 18px;
+    .hero h2 {
+      font-size: clamp(35px, 7vw, 65px);
+      margin-bottom: 15px;
     }
 
     .hero p {
@@ -84,8 +113,10 @@
       line-height: 1.7;
     }
 
+    /* SECTIONS */
+
     .section {
-      padding: 65px 0;
+      padding: 60px 0;
     }
 
     .section-title {
@@ -93,7 +124,7 @@
     }
 
     .section-title h2 {
-      font-size: 32px;
+      font-size: 31px;
       margin-bottom: 8px;
     }
 
@@ -103,9 +134,14 @@
 
     .content-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(
+        auto-fit,
+        minmax(260px, 1fr)
+      );
       gap: 22px;
     }
+
+    /* CARDS */
 
     .content-card {
       background: #15151b;
@@ -129,7 +165,8 @@
       display: block;
     }
 
-    /* 3-second preview */
+    /* VIDEO PREVIEW */
+
     .preview-video {
       pointer-events: none;
     }
@@ -140,11 +177,12 @@
       z-index: 4;
     }
 
-    /* LIGHT BLUR — not heavy blur */
+    /* LIGHT PHOTO BLUR */
+
     .photo-preview {
-      filter: blur(7px);
+      filter: blur(6px);
       transform: scale(1.04);
-      opacity: .78;
+      opacity: .8;
     }
 
     .lock {
@@ -153,9 +191,9 @@
       right: 12px;
       z-index: 6;
       background: rgba(0,0,0,.72);
-      border-radius: 50%;
       width: 42px;
       height: 42px;
+      border-radius: 50%;
       display: grid;
       place-items: center;
     }
@@ -165,7 +203,7 @@
       left: 12px;
       bottom: 12px;
       z-index: 6;
-      background: rgba(0,0,0,.7);
+      background: rgba(0,0,0,.72);
       padding: 7px 11px;
       border-radius: 8px;
       font-size: 12px;
@@ -186,6 +224,8 @@
       margin-bottom: 15px;
     }
 
+    /* BUTTONS */
+
     .btn {
       border: 0;
       border-radius: 10px;
@@ -199,8 +239,12 @@
     }
 
     .secondary {
-      background: #25252d;
+      background: #292930;
       color: #fff;
+    }
+
+    .btn:disabled {
+      cursor: default;
     }
 
     .empty {
@@ -210,9 +254,12 @@
       border-radius: 14px;
     }
 
+    /* MEMBERSHIP */
+
     .plans {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns:
+        repeat(auto-fit, minmax(240px, 1fr));
       gap: 20px;
     }
 
@@ -232,6 +279,8 @@
       font-weight: 800;
       margin: 15px 0;
     }
+
+    /* FORMS */
 
     form {
       display: grid;
@@ -254,6 +303,8 @@
       resize: vertical;
     }
 
+    /* FOOTER */
+
     footer {
       border-top: 1px solid #292932;
       padding: 35px 0;
@@ -261,14 +312,14 @@
       text-align: center;
     }
 
-    /* MODALS */
+    /* MODAL */
 
     .modal {
       display: none;
       position: fixed;
       inset: 0;
       z-index: 999;
-      background: rgba(0,0,0,.8);
+      background: rgba(0,0,0,.82);
       padding: 20px;
       overflow-y: auto;
     }
@@ -311,6 +362,7 @@
     }
 
     @media(max-width:700px) {
+
       .nav {
         flex-direction: column;
       }
@@ -330,7 +382,10 @@
 
 <header>
   <div class="container nav">
-    <div class="logo">RIYA ROY Creation</div>
+
+    <div class="logo">
+      RIYA ROY Creation
+    </div>
 
     <nav class="nav-links">
       <a href="#home">Home</a>
@@ -338,164 +393,315 @@
       <a href="#premium-photo">Photos</a>
       <a href="#membership">Membership</a>
       <a href="#promotion">Promotion</a>
-      <a href="javascript:void(0)" onclick="openAccount()">Account</a>
+      <a href="javascript:void(0)" onclick="openAccount()">
+        Account
+      </a>
     </nav>
+
   </div>
 </header>
 
 
-<main>
+<!-- RIYA ROY PROFILE -->
+
+<section class="profile">
+
+  <div class="container">
+
+    <img
+      class="profile-photo"
+      src="assets/profile.jpg"
+      alt="Riya Roy">
+
+    <h1>Riya Roy</h1>
+
+    <p>
+      Official Creator Profile
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- HERO -->
 
 <section class="hero" id="home">
+
   <div class="container">
-    <h1>RIYA ROY Creation</h1>
+
+    <h2>RIYA ROY Creation</h2>
+
     <p>
-      Premium videos, photos, membership and exclusive creator content.
+      Premium videos, photos, membership
+      and exclusive creator content.
     </p>
+
   </div>
+
 </section>
 
 
-<!-- PREMIUM VIDEO -->
+<!-- PREMIUM VIDEOS -->
 
 <section class="section" id="premium-video">
+
   <div class="container">
 
     <div class="section-title">
+
       <h2>Premium Videos</h2>
-      <p>3-second preview • Full video after unlock</p>
+
+      <p>
+        3-second preview • Full video after unlock
+      </p>
+
     </div>
 
-    <div id="premiumVideoGrid" class="content-grid">
-      <div class="empty">Loading premium videos...</div>
+    <div
+      id="premiumVideoGrid"
+      class="content-grid">
+
+      <div class="empty">
+        Loading premium videos...
+      </div>
+
     </div>
 
   </div>
+
 </section>
 
 
-<!-- PREMIUM PHOTO -->
+<!-- PREMIUM PHOTOS -->
 
 <section class="section" id="premium-photo">
+
   <div class="container">
 
     <div class="section-title">
+
       <h2>Premium Photos</h2>
-      <p>Preview available • Unlock to view clearly</p>
+
+      <p>
+        Preview available • Unlock to view clearly
+      </p>
+
     </div>
 
-    <div id="premiumPhotoGrid" class="content-grid">
-      <div class="empty">Loading premium photos...</div>
+    <div
+      id="premiumPhotoGrid"
+      class="content-grid">
+
+      <div class="empty">
+        Loading premium photos...
+      </div>
+
     </div>
 
   </div>
+
 </section>
 
 
 <!-- MEMBERSHIP -->
 
 <section class="section" id="membership">
+
   <div class="container">
 
     <div class="section-title">
+
       <h2>Membership</h2>
-      <p>Choose your membership plan.</p>
+
+      <p>
+        Choose your membership plan.
+      </p>
+
     </div>
 
     <div class="plans">
 
       <div class="plan">
+
         <h3>Monthly</h3>
-        <div class="price">₹99</div>
-        <p>Access premium membership content.</p>
-        <button class="btn primary"
-          onclick="buyMembership('Monthly Membership',99)">
+
+        <div class="price">
+          ₹99
+        </div>
+
+        <p>
+          Access premium membership content.
+        </p>
+
+        <button
+          class="btn primary"
+          onclick="buyMembership(
+            'Monthly Membership',
+            99
+          )">
+
           Join Now
+
         </button>
+
       </div>
 
+
       <div class="plan">
+
         <h3>Yearly</h3>
-        <div class="price">₹499</div>
-        <p>Long-term premium membership.</p>
-        <button class="btn primary"
-          onclick="buyMembership('Yearly Membership',499)">
+
+        <div class="price">
+          ₹499
+        </div>
+
+        <p>
+          Long-term premium membership.
+        </p>
+
+        <button
+          class="btn primary"
+          onclick="buyMembership(
+            'Yearly Membership',
+            499
+          )">
+
           Join Now
+
         </button>
+
       </div>
 
     </div>
+
   </div>
+
 </section>
 
 
 <!-- PROMOTION -->
 
 <section class="section" id="promotion">
+
   <div class="container">
 
     <div class="section-title">
+
       <h2>Promotion</h2>
-      <p>Submit your promotion request.</p>
+
+      <p>
+        Submit your promotion request.
+      </p>
+
     </div>
 
     <form onsubmit="submitPromotion(event)">
-      <input id="promotionName" placeholder="Your Name" required>
-      <input id="promotionContact" placeholder="Mobile / Contact" required>
-      <textarea id="promotionDetails"
+
+      <input
+        id="promotionName"
+        placeholder="Your Name"
+        required>
+
+      <input
+        id="promotionContact"
+        placeholder="Mobile / Contact"
+        required>
+
+      <textarea
+        id="promotionDetails"
         placeholder="Promotion details"
         required></textarea>
 
-      <button class="btn primary" type="submit">
+      <button
+        class="btn primary"
+        type="submit">
+
         Submit Promotion — ₹30
+
       </button>
+
     </form>
 
   </div>
+
 </section>
 
 
-<!-- COLLAB -->
+<!-- COLLABORATION -->
 
-<section class="section" id="collaboration">
+<section
+  class="section"
+  id="collaboration">
+
   <div class="container">
 
     <div class="section-title">
+
       <h2>Collaboration</h2>
-      <p>For collaboration enquiries.</p>
+
+      <p>
+        For collaboration enquiries.
+      </p>
+
     </div>
 
     <form onsubmit="submitCollab(event)">
-      <input id="collabName" placeholder="Your Name" required>
-      <input id="collabContact" placeholder="Mobile / Email" required>
-      <textarea id="collabDetails"
+
+      <input
+        id="collabName"
+        placeholder="Your Name"
+        required>
+
+      <input
+        id="collabContact"
+        placeholder="Mobile / Email"
+        required>
+
+      <textarea
+        id="collabDetails"
         placeholder="Tell us about your collaboration"
         required></textarea>
 
-      <button class="btn primary" type="submit">
+      <button
+        class="btn primary"
+        type="submit">
+
         Send Request
+
       </button>
+
     </form>
 
   </div>
-</section>
 
-</main>
+</section>
 
 
 <footer>
+
   <div class="container">
+
     © 2026 RIYA ROY Creation
+
   </div>
+
 </footer>
 
 
 <!-- LOGIN MODAL -->
 
-<div class="modal" id="loginModal">
+<div
+  class="modal"
+  id="loginModal">
+
   <div class="modal-box">
 
-    <button class="close" onclick="closeModal('loginModal')">×</button>
+    <button
+      class="close"
+      onclick="closeModal('loginModal')">
+      ×
+    </button>
 
     <h2>Login</h2>
 
@@ -509,13 +715,20 @@
 
       <div class="gap"></div>
 
-      <button class="btn primary" onclick="sendOtp()">
+      <button
+        class="btn primary"
+        onclick="sendOtp()">
+
         Send OTP
+
       </button>
 
     </div>
 
-    <div id="otpStep" style="display:none">
+
+    <div
+      id="otpStep"
+      style="display:none">
 
       <input
         id="loginOtp"
@@ -524,45 +737,78 @@
 
       <div class="gap"></div>
 
-      <button class="btn primary" onclick="verifyOtp()">
+      <button
+        class="btn primary"
+        onclick="verifyOtp()">
+
         Verify OTP
+
       </button>
 
-      <p style="margin-top:12px;color:#777;font-size:12px">
+      <p
+        style="
+          margin-top:12px;
+          color:#777;
+          font-size:12px;
+        ">
+
         Demo OTP: 123456
+
       </p>
 
     </div>
 
   </div>
+
 </div>
 
 
 <!-- PAYMENT MODAL -->
 
-<div class="modal" id="paymentModal">
+<div
+  class="modal"
+  id="paymentModal">
+
   <div class="modal-box">
 
-    <button class="close" onclick="closeModal('paymentModal')">×</button>
+    <button
+      class="close"
+      onclick="closeModal('paymentModal')">
+      ×
+    </button>
 
-    <h2 id="paymentTitle">Payment</h2>
+    <h2 id="paymentTitle">
+      Payment
+    </h2>
 
     <p>
       Amount:
-      <strong>₹<span id="paymentAmount">0</span></strong>
+      <strong>
+        ₹<span id="paymentAmount">0</span>
+      </strong>
     </p>
 
     <div class="payment-upi">
+
       UPI ID:<br>
-      <strong>917679669353@upi</strong>
+
+      <strong>
+        917679669353@upi
+      </strong>
+
     </div>
 
     <a
       id="upiLink"
       class="btn primary"
-      style="display:block;text-align:center"
+      style="
+        display:block;
+        text-align:center;
+      "
       href="#">
+
       Open UPI App
+
     </a>
 
     <div class="gap"></div>
@@ -571,21 +817,33 @@
       class="btn secondary"
       style="width:100%"
       onclick="markPaymentPending()">
+
       I have paid / Check payment
+
     </button>
 
   </div>
+
 </div>
 
 
 <!-- ACCOUNT MODAL -->
 
-<div class="modal" id="accountModal">
+<div
+  class="modal"
+  id="accountModal">
+
   <div class="modal-box">
 
-    <button class="close" onclick="closeModal('accountModal')">×</button>
+    <button
+      class="close"
+      onclick="closeModal('accountModal')">
+      ×
+    </button>
 
-    <h2>My Account</h2>
+    <h2>
+      My Account
+    </h2>
 
     <div id="accountInfo"></div>
 
@@ -595,10 +853,13 @@
       class="btn secondary"
       style="width:100%"
       onclick="logout()">
+
       Logout
+
     </button>
 
   </div>
+
 </div>
 
 
