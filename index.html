@@ -2,102 +2,128 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>RIYA ROY Creation</title>
 <meta name="description" content="RIYA ROY Creation — Premium Content, Membership, Promotion and Brand Collaboration.">
 <link rel="stylesheet" href="styles.css">
 <style>
-  /* 3 सेकंड टीज़र बैज */
+  #ageGate {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 15, 0.98);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+    padding: 20px;
+  }
+
   .preview-badge {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(255, 45, 85, 0.85);
+    top: 12px;
+    right: 12px;
+    background: #ff2d55;
     color: #fff;
     font-size: 11px;
-    font-weight: 700;
-    padding: 4px 8px;
+    font-weight: 800;
+    padding: 4px 10px;
     border-radius: 6px;
     letter-spacing: 0.5px;
-    z-index: 2;
-    pointer-events: none;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
   }
 
-  /* वीडियो कंटेनर */
-  .video-preview-box {
+  .teaser-video-container {
     position: relative;
     width: 100%;
-    height: 240px;
+    height: 250px;
     background: #000;
-    overflow: hidden;
     border-radius: 12px;
+    overflow: hidden;
   }
 
-  .video-preview-box video {
+  .teaser-video-container video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    pointer-events: none;
+    display: block;
   }
 
-  /* फ़ोटो का ब्लर और लॉक बॉक्स */
-  .photo-blur-box {
+  .touch-shield {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    background: transparent;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  .teaser-photo-container {
     position: relative;
     width: 100%;
-    height: 240px;
+    height: 250px;
     background: #111;
-    overflow: hidden;
     border-radius: 12px;
+    overflow: hidden;
   }
 
-  .photo-blur-box img {
+  .teaser-photo-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: blur(20px);
-    opacity: 0.6;
+    filter: blur(25px);
+    -webkit-filter: blur(25px);
+    transform: scale(1.1);
+    opacity: 0.55;
+    user-select: none;
     pointer-events: none;
   }
 
-  .photo-blur-box .lock-overlay {
+  .locked-badge-center {
     position: absolute;
     inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.4);
+    z-index: 6;
+    background: rgba(0, 0, 0, 0.45);
+    pointer-events: none;
   }
 
-  .photo-blur-box .lock-overlay span {
-    font-size: 36px;
+  .locked-badge-center span {
+    font-size: 38px;
     margin-bottom: 6px;
   }
 
-  .photo-blur-box .lock-overlay small {
+  .locked-badge-center strong {
     color: #fff;
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 1px;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
   }
 </style>
 </head>
 <body>
-<div id="ageGate" class="gate" style="display:flex;">
+
+<div id="ageGate">
   <div class="gate-card">
     <div class="brand-mark">RR</div>
     <h1>RIYA ROY Creation</h1>
     <p>18+ confirmation required to enter.</p>
     <p class="muted">I confirm that I am 18 years or older.</p>
     <div class="gate-actions">
-      <button class="btn primary" onclick="document.getElementById('ageGate').style.display='none'">Yes, Enter</button>
+      <button class="btn primary" onclick="confirmAge()">Yes, Enter</button>
       <button class="btn ghost" onclick="location.href='https://www.google.com/'">No, Exit</button>
     </div>
   </div>
 </div>
 
 <header class="topbar">
-  <a class="logo" href="#home">RIYA ROY <span>Creation</span></a>
+  <a class="logo" href="#home" onclick="closeMenu()">RIYA ROY <span>Creation</span></a>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
   <nav id="nav">
     <a href="#home">Home</a>
     <a href="#premium-video">Premium Video</a>
@@ -106,6 +132,7 @@
     <a href="#membership">Membership</a>
     <a href="#promote">Promote With Me</a>
     <a href="#collab">Brand Collaboration</a>
+    <button class="nav-account" onclick="openAccount()">My Account</button>
   </nav>
 </header>
 
@@ -138,73 +165,76 @@
   <div><strong>₹99</strong><span>Membership from</span></div>
 </section>
 
-<!-- PREMIUM VIDEOS (3 SECONDS TEASER LOOP) -->
 <section class="section" id="premium-video">
   <div class="section-head"><div><p class="eyebrow">01</p><h2>Premium Video</h2></div><span class="price-pill">₹49 each</span></div>
   <div class="content-grid">
+    
     <article class="content-card">
-      <div class="media video-preview-box">
+      <div class="teaser-video-container">
         <span class="preview-badge">3s PREVIEW</span>
-        <video autoplay muted playsinline loop src="assets/premium-video.mp4" ontimeupdate="if(this.currentTime>=3){this.currentTime=0;}"></video>
+        <div class="touch-shield"></div>
+        <video class="loop-3s" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" src="assets/premium-video.mp4"></video>
       </div>
       <div class="card-body">
         <h3>Premium Video #01</h3>
-        <p>3-second preview. Unlock to watch full video.</p>
-        <button class="btn small primary" onclick="buyContent('Premium Video #01','Premium Video',49)">Unlock Full Video ₹49</button>
+        <p>3-second preview only. Full HD video locked.</p>
+        <button class="btn small primary" onclick="buyContent('Premium Video #01','Premium Video',49)">Unlock ₹49</button>
       </div>
     </article>
 
     <article class="content-card">
-      <div class="media video-preview-box">
+      <div class="teaser-video-container">
         <span class="preview-badge">3s PREVIEW</span>
-        <video autoplay muted playsinline loop src="assets/premium-video2.mp4" ontimeupdate="if(this.currentTime>=3){this.currentTime=0;}"></video>
+        <div class="touch-shield"></div>
+        <video class="loop-3s" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" src="assets/premium-video2.mp4"></video>
       </div>
       <div class="card-body">
         <h3>Premium Video #02</h3>
-        <p>3-second preview. Unlock to watch full video.</p>
-        <button class="btn small primary" onclick="buyContent('Premium Video #02','Premium Video',49)">Unlock Full Video ₹49</button>
+        <p>3-second preview only. Full HD video locked.</p>
+        <button class="btn small primary" onclick="buyContent('Premium Video #02','Premium Video',49)">Unlock ₹49</button>
       </div>
     </article>
+
   </div>
 </section>
 
-<!-- PREMIUM PHOTOS (HEAVY BLUR + LOCK) -->
 <section class="section alt" id="premium-photo">
   <div class="section-head"><div><p class="eyebrow">02</p><h2>Premium Photo</h2></div><span class="price-pill">₹19 each</span></div>
   <div class="content-grid">
+
     <article class="content-card">
-      <div class="media photo-blur-box">
+      <div class="teaser-photo-container">
         <img src="assets/premium-photo.png" alt="Premium Photo #01">
-        <div class="lock-overlay">
+        <div class="locked-badge-center">
           <span>🔒</span>
-          <small>LOCKED PHOTO</small>
+          <strong>LOCKED PHOTO</strong>
         </div>
       </div>
       <div class="card-body">
         <h3>Premium Photo #01</h3>
-        <p>Full HD photo set. View inside website.</p>
-        <button class="btn small primary" onclick="buyContent('Premium Photo #01','Premium Photo',19)">Unlock Photo ₹19</button>
+        <p>Ultra HD photoshoot set. Full view locked.</p>
+        <button class="btn small primary" onclick="buyContent('Premium Photo #01','Premium Photo',19)">Unlock ₹19</button>
       </div>
     </article>
 
     <article class="content-card">
-      <div class="media photo-blur-box">
+      <div class="teaser-photo-container">
         <img src="assets/premium-photo2.png" alt="Premium Photo #02">
-        <div class="lock-overlay">
+        <div class="locked-badge-center">
           <span>🔒</span>
-          <small>LOCKED PHOTO</small>
+          <strong>LOCKED PHOTO</strong>
         </div>
       </div>
       <div class="card-body">
         <h3>Premium Photo #02</h3>
-        <p>Full HD photo set. View inside website.</p>
-        <button class="btn small primary" onclick="buyContent('Premium Photo #02','Premium Photo',19)">Unlock Photo ₹19</button>
+        <p>Ultra HD photoshoot set. Full view locked.</p>
+        <button class="btn small primary" onclick="buyContent('Premium Photo #02','Premium Photo',19)">Unlock ₹19</button>
       </div>
     </article>
+
   </div>
 </section>
 
-<!-- EXCLUSIVE VIDEOS -->
 <section class="section" id="exclusive-video">
   <div class="section-head"><div><p class="eyebrow">03</p><h2>Exclusive Video</h2></div><span class="price-pill">₹59 each</span></div>
   <div class="content-grid">
@@ -215,18 +245,16 @@
   </div>
 </section>
 
-<!-- MEMBERSHIP -->
 <section class="section membership" id="membership">
   <div class="section-head"><div><p class="eyebrow">MEMBERSHIP</p><h2>Choose your access</h2></div><span class="price-pill">Manual renewal</span></div>
   <div class="plans">
-    <article class="plan"><span>Monthly</span><strong>₹99</strong><small>30 days</small><button class="btn primary">Join</button></article>
-    <article class="plan featured"><span>3 Months</span><strong>₹249</strong><small>90 days</small><button class="btn primary">Join</button></article>
-    <article class="plan"><span>Yearly</span><strong>₹999</strong><small>365 days</small><button class="btn primary">Join</button></article>
+    <article class="plan"><span>Monthly</span><strong>₹99</strong><small>30 days</small><button class="btn primary" onclick="buyMembership('Monthly',99)">Join</button></article>
+    <article class="plan featured"><span>3 Months</span><strong>₹249</strong><small>90 days</small><button class="btn primary" onclick="buyMembership('3 Months',249)">Join</button></article>
+    <article class="plan"><span>Yearly</span><strong>₹999</strong><small>365 days</small><button class="btn primary" onclick="buyMembership('Yearly',999)">Join</button></article>
   </div>
   <p class="note">Active membership includes Premium Video, Premium Photo and Exclusive Video, including new content added during the active period. No auto-renewal.</p>
 </section>
 
-<!-- PROMOTE -->
 <section class="section alt" id="promote">
   <div class="section-head"><div><p class="eyebrow">PROMOTE WITH ME</p><h2>Promotion services</h2></div></div>
   <form class="form-card" onsubmit="submitPromotion(event)">
@@ -245,7 +273,6 @@
   </form>
 </section>
 
-<!-- BRAND COLLABORATION -->
 <section class="section" id="collab">
   <div class="section-head"><div><p class="eyebrow">BRAND COLLABORATION</p><h2>Let's work together</h2></div></div>
   <form class="form-card" onsubmit="submitCollab(event)">
@@ -267,11 +294,11 @@
 
 <footer>
   <div><strong>RIYA ROY Creation</strong><span>Premium Content • Promotion • Brand Collaboration</span></div>
+  <div class="footer-links"><a href="https://www.instagram.com/riya_roy5910" target="_blank">Instagram</a><a href="https://www.facebook.com/share/1JEAUP6VeA/" target="_blank">Facebook</a><a href="https://youtube.com/@riya_roy_5910" target="_blank">YouTube</a><a href="#" onclick="legal('Terms & Conditions')">Terms</a><a href="#" onclick="legal('Privacy Policy')">Privacy</a><a href="#" onclick="legal('Refund Policy')">Refund</a></div>
 </footer>
 
 <div id="toast"></div>
 
-<!-- LOGIN MODAL -->
 <div id="loginModal" class="modal"><div class="modal-card">
   <button class="close" onclick="closeModal('loginModal')">×</button><h2>Login with OTP</h2><p>Enter your mobile number. OTP verification is required for purchases and protected actions.</p>
   <input id="phone" type="tel" inputmode="numeric" placeholder="10-digit mobile number" maxlength="10">
@@ -279,19 +306,41 @@
   <div id="otpArea" hidden><input id="otp" placeholder="Demo OTP: 123456" maxlength="6"><button class="btn primary full" onclick="verifyOtp()">Verify OTP</button></div>
 </div></div>
 
-<!-- PAYMENT MODAL -->
 <div id="paymentModal" class="modal"><div class="modal-card">
   <button class="close" onclick="closeModal('paymentModal')">×</button><p class="eyebrow">PAYMENT</p><h2 id="payTitle">Payment</h2><div class="pay-box"><span>Amount</span><strong id="payAmount">₹0</strong><span>UPI ID</span><code>917679669353@upi</code></div>
   <a id="upiLink" class="btn primary full" href="#">Open UPI App</a>
   <button class="btn ghost full" onclick="markPaymentPending()">I have paid / Check payment</button>
 </div></div>
 
-<!-- ACCOUNT MODAL -->
 <div id="accountModal" class="modal"><div class="modal-card wide">
   <button class="close" onclick="closeModal('accountModal')">×</button><h2>My Account</h2>
   <div id="accountBody"></div>
 </div></div>
 
+<script>
+  function confirmAge() {
+    sessionStorage.setItem("age_verified", "1");
+    const gate = document.getElementById("ageGate");
+    if (gate) gate.style.display = "none";
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    if (sessionStorage.getItem("age_verified") === "1") {
+      const gate = document.getElementById("ageGate");
+      if (gate) gate.style.display = "none";
+    }
+
+    const teaserVideos = document.querySelectorAll(".loop-3s");
+    teaserVideos.forEach(function(video) {
+      video.addEventListener("timeupdate", function() {
+        if (this.currentTime >= 3.0) {
+          this.currentTime = 0;
+          this.play();
+        }
+      });
+    });
+  });
+</script>
 <script src="app.js"></script>
 </body>
 </html>
