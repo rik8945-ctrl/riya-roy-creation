@@ -3,84 +3,31 @@
    Automatic Assets System
 ===================================================== */
 
-
-/* =========================
-   USER STATE
-========================= */
-
 const state = {
-
-  user: JSON.parse(
-    localStorage.getItem("rr_user") || "null"
-  ),
-
-  orders: JSON.parse(
-    localStorage.getItem("rr_orders") || "[]"
-  )
-
+  user: JSON.parse(localStorage.getItem("rr_user") || "null"),
+  orders: JSON.parse(localStorage.getItem("rr_orders") || "[]")
 };
 
-
 function save() {
-
-  localStorage.setItem(
-    "rr_user",
-    JSON.stringify(state.user)
-  );
-
-  localStorage.setItem(
-    "rr_orders",
-    JSON.stringify(state.orders)
-  );
-
+  localStorage.setItem("rr_user", JSON.stringify(state.user));
+  localStorage.setItem("rr_orders", JSON.stringify(state.orders));
 }
-
-
-/* =========================
-   ASSETS
-========================= */
 
 const ASSET_PATH = "assets/";
 
-
-/* =========================
-   MODALS
-========================= */
-
 function openModal(id) {
-
-  const modal =
-    document.getElementById(id);
-
-  if (modal) {
-    modal.style.display = "block";
-  }
-
+  const modal = document.getElementById(id);
+  if (modal) modal.style.display = "block";
 }
-
 
 function closeModal(id) {
-
-  const modal =
-    document.getElementById(id);
-
-  if (modal) {
-    modal.style.display = "none";
-  }
-
+  const modal = document.getElementById(id);
+  if (modal) modal.style.display = "none";
 }
-
-
-/* =========================
-   MESSAGE
-========================= */
 
 function toast(message) {
-
   alert(message);
-
 }
-
 
 /* =========================
    LOGIN
@@ -88,172 +35,103 @@ function toast(message) {
 
 let loginNextAction = null;
 
-
 function requireLogin(next) {
-
   if (state.user) {
-
     next();
-
     return;
   }
 
   loginNextAction = next;
-
   openModal("loginModal");
-
 }
 
-
 function sendOtp() {
-
-  const phone =
-    document.getElementById("loginPhone");
-
+  const phone = document.getElementById("loginPhone");
   if (!phone) return;
 
-  const value =
-    phone.value.trim();
+  const value = phone.value.trim();
 
   if (!/^[0-9]{10}$/.test(value)) {
-
-    toast(
-      "Please enter a valid 10-digit mobile number."
-    );
-
+    toast("Please enter a valid 10-digit mobile number.");
     return;
   }
 
-  document.getElementById(
-    "phoneStep"
-  ).style.display = "none";
+  document.getElementById("phoneStep").style.display = "none";
+  document.getElementById("otpStep").style.display = "block";
 
-  document.getElementById(
-    "otpStep"
-  ).style.display = "block";
-
-  toast(
-    "OTP sent. Demo OTP is 123456."
-  );
-
+  toast("OTP sent. Demo OTP is 123456.");
 }
 
-
 function verifyOtp() {
-
-  const phone =
-    document.getElementById("loginPhone");
-
-  const otp =
-    document.getElementById("loginOtp");
+  const phone = document.getElementById("loginPhone");
+  const otp = document.getElementById("loginOtp");
 
   if (!phone || !otp) return;
 
   if (otp.value.trim() !== "123456") {
-
     toast("Invalid OTP.");
-
     return;
   }
 
   state.user = {
-
     phone: phone.value.trim(),
-
     member: false
-
   };
 
   save();
-
   closeModal("loginModal");
 
-  const next =
-    loginNextAction;
-
+  const next = loginNextAction;
   loginNextAction = null;
 
   if (typeof next === "function") {
-
     next();
-
   }
-
 }
-
 
 /* =========================
    ACCOUNT
 ========================= */
 
 function openAccount() {
-
   if (!state.user) {
-
-    requireLogin(
-      () => openAccount()
-    );
-
+    requireLogin(() => openAccount());
     return;
   }
 
-  const info =
-    document.getElementById(
-      "accountInfo"
-    );
-
+  const info = document.getElementById("accountInfo");
   if (!info) return;
 
   info.innerHTML = `
-
     <p>
       Mobile:
-      <strong>
-        ${escapeHtml(state.user.phone)}
-      </strong>
+      <strong>${escapeHtml(state.user.phone)}</strong>
     </p>
 
     <div class="gap"></div>
 
     <p>
       Membership:
-      <strong>
-        ${
-          state.user.member
-            ? "Active"
-            : "Not Active"
-        }
-      </strong>
+      <strong>${state.user.member ? "Active" : "Not Active"}</strong>
     </p>
 
     <div class="gap"></div>
 
     <p>
       Purchased items:
-      <strong>
-        ${state.orders.length}
-      </strong>
+      <strong>${state.orders.length}</strong>
     </p>
-
   `;
 
   openModal("accountModal");
-
 }
-
 
 function logout() {
-
   state.user = null;
-
   save();
-
   closeModal("accountModal");
-
   toast("Logged out.");
-
 }
-
 
 /* =========================
    PAYMENT
@@ -261,65 +139,30 @@ function logout() {
 
 let pendingPay = null;
 
-
-function openPayment(
-  title,
-  amount,
-  type,
-  meta = {}
-) {
-
+function openPayment(title, amount, type, meta = {}) {
   requireLogin(() => {
 
     pendingPay = {
-
-      title: title,
-
-      amount: amount,
-
-      type: type,
-
-      meta: meta,
-
+      title,
+      amount,
+      type,
+      meta,
       id: "ORD" + Date.now()
-
     };
 
-
-    const titleElement =
-      document.getElementById(
-        "paymentTitle"
-      );
-
-    const amountElement =
-      document.getElementById(
-        "paymentAmount"
-      );
-
-    const upiLink =
-      document.getElementById(
-        "upiLink"
-      );
-
+    const titleElement = document.getElementById("paymentTitle");
+    const amountElement = document.getElementById("paymentAmount");
+    const upiLink = document.getElementById("upiLink");
 
     if (titleElement) {
-
-      titleElement.textContent =
-        title;
-
+      titleElement.textContent = title;
     }
-
 
     if (amountElement) {
-
-      amountElement.textContent =
-        amount;
-
+      amountElement.textContent = amount;
     }
 
-
     if (upiLink) {
-
       upiLink.href =
         "upi://pay" +
         "?pa=917679669353@upi" +
@@ -327,179 +170,111 @@ function openPayment(
         "&am=" +
         encodeURIComponent(amount) +
         "&cu=INR";
-
     }
 
-
     openModal("paymentModal");
-
   });
-
 }
 
-
 function markPaymentPending() {
-
   if (!pendingPay) {
-
-    toast(
-      "No payment is pending."
-    );
-
+    toast("No payment is pending.");
     return;
   }
 
-
-  const order =
-    pendingPay;
+  const order = pendingPay;
 
   state.orders.push(order);
-
   save();
 
   pendingPay = null;
 
   closeModal("paymentModal");
 
-  toast(
-    "Payment marked as done."
-  );
+  toast("Payment marked as done.");
 
-
-  if (
-    order.type === "Membership"
-  ) {
-
+  if (order.type === "Membership") {
     if (state.user) {
-
       state.user.member = true;
-
       save();
-
     }
-
   }
 
-
   loadAllPremiumContent();
-
 }
-
 
 /* =========================
    BUY CONTENT
 ========================= */
 
-function buyContent(
-  title,
-  category,
-  amount,
-  contentId
-) {
-
+function buyContent(title, category, amount, contentId) {
   openPayment(
-
     title,
-
     amount,
-
     category,
-
     {
       contentId: contentId
     }
-
   );
-
 }
-
 
 /* =========================
    MEMBERSHIP
 ========================= */
 
-function buyMembership(
-  plan,
-  amount
-) {
-
+function buyMembership(plan, amount) {
   openPayment(
-
     plan,
-
     amount,
-
     "Membership",
-
     {
       membership: true,
       plan: plan
     }
-
   );
-
 }
-
 
 /* =========================
    PROMOTION
 ========================= */
 
 function submitPromotion(event) {
-
   event.preventDefault();
 
   const name =
-    document.getElementById(
-      "promotionName"
-    ).value.trim();
+    document.getElementById("promotionName").value.trim();
 
   const contact =
-    document.getElementById(
-      "promotionContact"
-    ).value.trim();
+    document.getElementById("promotionContact").value.trim();
 
   const details =
-    document.getElementById(
-      "promotionDetails"
-    ).value.trim();
-
+    document.getElementById("promotionDetails").value.trim();
 
   requireLogin(() => {
 
     openPayment(
-
       "Promotion Order",
-
       30,
-
       "Promotion",
-
       {
         name: name,
         contact: contact,
         details: details
       }
-
     );
 
   });
-
 }
-
 
 /* =========================
    COLLABORATION
 ========================= */
 
 function submitCollab(event) {
-
   event.preventDefault();
 
   const name =
-    document.getElementById(
-      "collabName"
-    ).value.trim();
+    document.getElementById("collabName").value.trim();
 
   requireLogin(() => {
 
@@ -509,9 +284,7 @@ function submitCollab(event) {
     );
 
   });
-
 }
-
 
 /* =====================================================
    GITHUB ASSETS
@@ -519,44 +292,28 @@ function submitCollab(event) {
 
 async function getAssetFiles() {
 
-  const repoOwner =
-    "rik8945-ctrl";
-
-  const repoName =
-    "riya-roy-creation";
+  const repoOwner = "rik8945-ctrl";
+  const repoName = "riya-roy-creation";
 
   const apiUrl =
     `https://api.github.com/repos/${repoOwner}/${repoName}/contents/assets`;
 
-
   const response =
     await fetch(apiUrl);
 
-
   if (!response.ok) {
-
-    throw new Error(
-      "Could not load assets."
-    );
-
+    throw new Error("Could not load assets.");
   }
-
 
   const files =
     await response.json();
 
-
   if (!Array.isArray(files)) {
-
     return [];
-
   }
 
-
   return files;
-
 }
-
 
 /* =====================================================
    PURCHASE CHECK
@@ -565,18 +322,12 @@ async function getAssetFiles() {
 function hasPurchased(contentId) {
 
   if (!state.user) {
-
     return false;
-
   }
-
 
   if (state.user.member) {
-
     return true;
-
   }
-
 
   return state.orders.some(order => {
 
@@ -586,9 +337,7 @@ function hasPurchased(contentId) {
     );
 
   });
-
 }
-
 
 /* =====================================================
    PREMIUM VIDEOS
@@ -603,22 +352,46 @@ async function loadPremiumVideos(files) {
 
   if (!grid) return;
 
-
   /*
-     ONLY preview-video*.mp4
-     is detected here.
+     Only:
+     video1.mp4
+     video2.mp4
+     video3.mp4
+
+     are detected.
+
+     The first 3 seconds of the same
+     video are automatically used
+     as the preview.
   */
 
-  const previews =
-    files.filter(file => {
+  const videos =
+    files
+      .filter(file => {
 
-      return /^preview-video.*\.mp4$/i
-        .test(file.name);
+        return /^video\d+\.mp4$/i
+          .test(file.name);
 
-    });
+      })
+      .sort((a, b) => {
 
+        const na =
+          parseInt(
+            a.name.match(/\d+/)?.[0] || "0",
+            10
+          );
 
-  if (previews.length === 0) {
+        const nb =
+          parseInt(
+            b.name.match(/\d+/)?.[0] || "0",
+            10
+          );
+
+        return na - nb;
+
+      });
+
+  if (videos.length === 0) {
 
     grid.innerHTML = `
       <div class="empty">
@@ -627,188 +400,144 @@ async function loadPremiumVideos(files) {
     `;
 
     return;
-
   }
-
 
   grid.innerHTML = "";
 
+  videos.forEach(videoFile => {
 
-  previews.forEach(
-    (previewFile, index) => {
-
-      const number =
-        String(index + 1)
-          .padStart(2, "0");
-
-
-      /*
-         preview-video1.mp4
-         ↓
-         premium-video1.mp4
-      */
-
-      const fullFileName =
-        previewFile.name.replace(
-          /^preview-/i,
-          ""
-        );
-
-
-      const contentId =
-        "video-" +
-        previewFile.name;
-
-
-      const card =
-        document.createElement(
-          "article"
-        );
-
-      card.className =
-        "content-card";
-
-
-      card.innerHTML = `
-
-        <div class="media">
-
-          <video
-            class="preview-video"
-            muted
-            autoplay
-            playsinline
-            webkit-playsinline
-            preload="metadata"
-            src="${ASSET_PATH}${encodeURIComponent(
-              previewFile.name
-            )}">
-          </video>
-
-          <div class="touch-shield"></div>
-
-          <span class="lock">
-            🔒
-          </span>
-
-          <span class="preview-label">
-            3 SEC PREVIEW
-          </span>
-
-        </div>
-
-
-        <div class="card-body">
-
-          <h3>
-            Premium Video #${number}
-          </h3>
-
-          <p>
-            3-second preview.
-            Unlock for full video.
-          </p>
-
-          <button
-            class="btn primary unlock-video">
-
-            Unlock ₹49
-
-          </button>
-
-        </div>
-
-      `;
-
-
-      grid.appendChild(card);
-
-
-      const video =
-        card.querySelector(
-          ".preview-video"
-        );
-
-
-      const button =
-        card.querySelector(
-          ".unlock-video"
-        );
-
-
-      /*
-         3-second loop
-      */
-
-      setupThreeSecondLoop(
-        video
+    const match =
+      videoFile.name.match(
+        /^video(\d+)\.mp4$/i
       );
 
+    const number =
+      String(
+        parseInt(
+          match?.[1] || "0",
+          10
+        )
+      ).padStart(2, "0");
 
-      /*
-         Already purchased?
-      */
+    const contentId =
+      "video-" +
+      videoFile.name;
 
-      if (
-        hasPurchased(contentId)
-      ) {
+    const card =
+      document.createElement(
+        "article"
+      );
 
-        showFullVideo(
+    card.className =
+      "content-card";
 
-          card,
+    card.innerHTML = `
 
-          fullFileName,
+      <div class="media">
 
-          number
+        <video
+          class="preview-video"
+          muted
+          autoplay
+          playsinline
+          webkit-playsinline
+          preload="metadata"
+          src="${ASSET_PATH}${encodeURIComponent(
+            videoFile.name
+          )}">
+        </video>
 
-        );
+        <div class="touch-shield"></div>
 
-      }
+        <span class="lock">
+          🔒
+        </span>
 
+        <span class="preview-label">
+          3 SEC PREVIEW
+        </span>
 
-      button.addEventListener(
-        "click",
-        () => {
+      </div>
 
-          if (
-            hasPurchased(contentId)
-          ) {
+      <div class="card-body">
 
-            showFullVideo(
+        <h3>
+          Premium Video #${number}
+        </h3>
 
-              card,
+        <p>
+          3-second preview.
+          Unlock for full video.
+        </p>
 
-              fullFileName,
+        <button
+          class="btn primary unlock-video">
 
-              number
+          Unlock ₹49
 
-            );
+        </button>
 
-          } else {
+      </div>
 
-            buyContent(
+    `;
 
-              "Premium Video #" +
-              number,
+    grid.appendChild(card);
 
-              "Premium Video",
+    const video =
+      card.querySelector(
+        ".preview-video"
+      );
 
-              49,
+    const button =
+      card.querySelector(
+        ".unlock-video"
+      );
 
-              contentId
+    setupThreeSecondLoop(video);
 
-            );
+    if (
+      hasPurchased(contentId)
+    ) {
 
-          }
-
-        }
+      showFullVideo(
+        card,
+        videoFile.name,
+        number
       );
 
     }
-  );
 
+    button.addEventListener(
+      "click",
+      () => {
+
+        if (
+          hasPurchased(contentId)
+        ) {
+
+          showFullVideo(
+            card,
+            videoFile.name,
+            number
+          );
+
+        } else {
+
+          buyContent(
+            "Premium Video #" +
+            number,
+            "Premium Video",
+            49,
+            contentId
+          );
+
+        }
+
+      }
+    );
+
+  });
 }
-
 
 /* =====================================================
    3 SECOND LOOP
@@ -818,9 +547,7 @@ function setupThreeSecondLoop(video) {
 
   if (!video) return;
 
-
   video.muted = true;
-
 
   video.addEventListener(
     "loadedmetadata",
@@ -832,16 +559,11 @@ function setupThreeSecondLoop(video) {
         video.play();
 
       if (play) {
-
-        play.catch(
-          () => {}
-        );
-
+        play.catch(() => {});
       }
 
     }
   );
-
 
   video.addEventListener(
     "timeupdate",
@@ -857,18 +579,13 @@ function setupThreeSecondLoop(video) {
           video.play();
 
         if (play) {
-
-          play.catch(
-            () => {}
-          );
-
+          play.catch(() => {});
         }
 
       }
 
     }
   );
-
 
   video.addEventListener(
     "seeking",
@@ -885,7 +602,6 @@ function setupThreeSecondLoop(video) {
     }
   );
 
-
   video.addEventListener(
     "ended",
     () => {
@@ -896,18 +612,13 @@ function setupThreeSecondLoop(video) {
         video.play();
 
       if (play) {
-
-        play.catch(
-          () => {}
-        );
-
+        play.catch(() => {});
       }
 
     }
   );
 
 }
-
 
 /* =====================================================
    FULL VIDEO AFTER PURCHASE
@@ -926,7 +637,6 @@ function showFullVideo(
 
   if (!media) return;
 
-
   media.innerHTML = `
 
     <video
@@ -942,12 +652,10 @@ function showFullVideo(
 
   `;
 
-
   const button =
     card.querySelector(
       ".unlock-video"
     );
-
 
   if (button) {
 
@@ -959,7 +667,6 @@ function showFullVideo(
   }
 
 }
-
 
 /* =====================================================
    PREMIUM PHOTOS
@@ -974,24 +681,43 @@ async function loadPremiumPhotos(files) {
 
   if (!grid) return;
 
-
   /*
-     profile.jpg is EXCLUDED.
+     Only:
+     photo1.jpg
+     photo2.jpg
+     photo3.jpg
+     photo4.jpg
+
+     are treated as premium photos.
+
+     profile.jpg is automatically excluded.
   */
 
   const photos =
-    files.filter(file => {
+    files
+      .filter(file => {
 
-      return (
-        /\.(jpg|jpeg|png|webp)$/i
-          .test(file.name)
-        &&
-        file.name.toLowerCase()
-          !== "profile.jpg"
-      );
+        return /^photo\d+\.(jpg|jpeg|png|webp)$/i
+          .test(file.name);
 
-    });
+      })
+      .sort((a, b) => {
 
+        const na =
+          parseInt(
+            a.name.match(/\d+/)?.[0] || "0",
+            10
+          );
+
+        const nb =
+          parseInt(
+            b.name.match(/\d+/)?.[0] || "0",
+            10
+          );
+
+        return na - nb;
+
+      });
 
   if (photos.length === 0) {
 
@@ -1002,148 +728,137 @@ async function loadPremiumPhotos(files) {
     `;
 
     return;
-
   }
-
 
   grid.innerHTML = "";
 
+  photos.forEach(photoFile => {
 
-  photos.forEach(
-    (photoFile, index) => {
+    const match =
+      photoFile.name.match(
+        /^photo(\d+)\./i
+      );
 
-      const number =
-        String(index + 1)
-          .padStart(2, "0");
+    const number =
+      String(
+        parseInt(
+          match?.[1] || "0",
+          10
+        )
+      ).padStart(2, "0");
 
+    const contentId =
+      "photo-" +
+      photoFile.name;
 
-      const contentId =
-        "photo-" +
-        photoFile.name;
+    const card =
+      document.createElement(
+        "article"
+      );
 
+    card.className =
+      "content-card";
 
-      const card =
-        document.createElement(
-          "article"
-        );
+    card.innerHTML = `
 
-      card.className =
-        "content-card";
+      <div class="media">
 
+        <img
+          class="photo-preview"
+          src="${ASSET_PATH}${encodeURIComponent(
+            photoFile.name
+          )}"
+          alt="Premium Photo"
+          loading="lazy">
 
-      card.innerHTML = `
+        <span class="lock">
+          🔒
+        </span>
 
-        <div class="media">
+        <span class="preview-label">
+          LOCKED
+        </span>
 
-          <img
-            class="photo-preview"
-            src="${ASSET_PATH}${encodeURIComponent(
-              photoFile.name
-            )}"
-            alt="Premium Photo"
-            loading="lazy">
+      </div>
 
-          <span class="lock">
-            🔒
-          </span>
+      <div class="card-body">
 
-          <span class="preview-label">
-            LOCKED
-          </span>
+        <h3>
+          Premium Photo #${number}
+        </h3>
 
-        </div>
+        <p>
+          Light blurred preview.
+          Unlock to view clearly.
+        </p>
 
+        <button
+          class="btn primary unlock-photo">
 
-        <div class="card-body">
+          Unlock ₹19
 
-          <h3>
-            Premium Photo #${number}
-          </h3>
+        </button>
 
-          <p>
-            Light blurred preview.
-            Unlock to view clearly.
-          </p>
+      </div>
 
-          <button
-            class="btn primary unlock-photo">
+    `;
 
-            Unlock ₹19
+    grid.appendChild(card);
 
-          </button>
+    const image =
+      card.querySelector(
+        ".photo-preview"
+      );
 
-        </div>
+    const button =
+      card.querySelector(
+        ".unlock-photo"
+      );
 
-      `;
+    if (
+      hasPurchased(contentId)
+    ) {
 
-
-      grid.appendChild(card);
-
-
-      const image =
-        card.querySelector(
-          ".photo-preview"
-        );
-
-
-      const button =
-        card.querySelector(
-          ".unlock-photo"
-        );
-
-
-      if (
-        hasPurchased(contentId)
-      ) {
-
-        unlockPhoto(
-          card,
-          image,
-          button
-        );
-
-      }
-
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          if (
-            hasPurchased(contentId)
-          ) {
-
-            unlockPhoto(
-              card,
-              image,
-              button
-            );
-
-          } else {
-
-            buyContent(
-
-              "Premium Photo #" +
-              number,
-
-              "Premium Photo",
-
-              19,
-
-              contentId
-
-            );
-
-          }
-
-        }
+      unlockPhoto(
+        card,
+        image,
+        button
       );
 
     }
-  );
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        if (
+          hasPurchased(contentId)
+        ) {
+
+          unlockPhoto(
+            card,
+            image,
+            button
+          );
+
+        } else {
+
+          buyContent(
+            "Premium Photo #" +
+            number,
+            "Premium Photo",
+            19,
+            contentId
+          );
+
+        }
+
+      }
+    );
+
+  });
 
 }
-
 
 /* =====================================================
    UNLOCK PHOTO
@@ -1157,11 +872,9 @@ function unlockPhoto(
 
   if (!image) return;
 
-
   image.classList.remove(
     "photo-preview"
   );
-
 
   image.style.filter =
     "none";
@@ -1172,18 +885,14 @@ function unlockPhoto(
   image.style.opacity =
     "1";
 
-
   const lock =
     card.querySelector(
       ".lock"
     );
 
   if (lock) {
-
     lock.remove();
-
   }
-
 
   const label =
     card.querySelector(
@@ -1197,7 +906,6 @@ function unlockPhoto(
 
   }
 
-
   if (button) {
 
     button.textContent =
@@ -1210,7 +918,6 @@ function unlockPhoto(
 
 }
 
-
 /* =====================================================
    LOAD EVERYTHING
 ===================================================== */
@@ -1222,11 +929,9 @@ async function loadAllPremiumContent() {
     const files =
       await getAssetFiles();
 
-
     await loadPremiumVideos(
       files
     );
-
 
     await loadPremiumPhotos(
       files
@@ -1242,7 +947,6 @@ async function loadAllPremiumContent() {
   }
 
 }
-
 
 /* =====================================================
    AGE SUPPORT
@@ -1268,7 +972,6 @@ function confirmAge() {
   }
 
 }
-
 
 /* =====================================================
    ESCAPE HTML
@@ -1304,7 +1007,6 @@ function escapeHtml(value) {
     );
 
 }
-
 
 /* =====================================================
    START
